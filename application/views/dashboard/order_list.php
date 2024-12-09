@@ -57,9 +57,9 @@
                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
                         class="bx bx-dots-vertical-rounded"></i></button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="<?php echo base_url() . 'acceptOrder/' . $course['id'] ?>"><i
+                      <a class="dropdown-item" href="<?php echo base_url() . 'acceptOrder/' . $data['id'] ?>"><i
                           class="bx bx-edit-alt me-1"></i> Accept</a>
-                      <a class="dropdown-item" href="<?php echo base_url() . 'cancelOrder/' . $course['id'] ?>"><i
+                      <a class="dropdown-item" href="<?php echo base_url() . 'cancelOrder/' . $data['id'] ?>"><i
                           class="bx bx-trash me-1"></i> Cancel</a>
                     </div>
                   </div>
