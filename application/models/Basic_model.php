@@ -29,12 +29,6 @@ class Basic_model extends CI_Model
         }
     }
 
-    /**
-     * Get user details from the customers table based on un_id
-     *
-     * @param string $unId
-     * @return array|bool
-     */
     public function getUserDetails($unId)
     {
         // Query the customers table for the given un_id
@@ -46,5 +40,35 @@ class Basic_model extends CI_Model
         } else {
             return false; // Return false if no result is found
         }
+    }
+
+
+    function getUserDetailsByUsername($username)
+    {
+        $this->db->where('username', $username);
+        $query = $this->db->get('customers');
+
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+
+    function team_list($username)
+    {
+        $this->db->where('placement_id', $username);
+        return $this->db->get('customers')->result_array();
+    }
+
+    function updateCustomer($un_id, $form)
+    {
+        $this->db->where('un_id', $un_id);
+        $this->db->update('customers', $form);
+    }
+
+    function create_income($form)
+    {
+        $this->db->insert('income', $form);
     }
 }
