@@ -102,6 +102,12 @@ class Course extends CI_Controller
     {
         $getCourseOrderDetails = $this->Course_model->getCourseOrderDetails($id);
 
+        if ($getCourseOrderDetails['status'] != 0) {
+            $this->session->set_flashdata('error', 'You can not edit this order!');
+            redirect(base_url() . 'orderList/0');
+            return;
+        }
+
         $quantity = $getCourseOrderDetails['quantity'];
         $customerDetails = $this->Basic_model->getUserDetails($getCourseOrderDetails['user_un_id']);
 
@@ -117,6 +123,10 @@ class Course extends CI_Controller
             $data['type'] = $courseDetails['type'];
             $this->Basic_model->updateCustomer($customerDetails['un_id'], $data);
         }
+
+        $form = array();
+        $form['status'] = 1;
+        $this->Course_model->updateCourseOrder($id, $form);
 
 
         $referedBy = $uData['un_id'];
@@ -232,6 +242,9 @@ class Course extends CI_Controller
                 $a++;
             }
         }
+
+        $this->session->set_flashdata('success', 'Accepted successfully!');
+        redirect(base_url() . 'orderList/0');
     }
 
     function cancelCoursePayment($id)

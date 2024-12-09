@@ -54,6 +54,12 @@ class Course_model extends CI_Model
         return $this->db->get('course')->row_array();
     }
 
+    function updateCourseOrder($id, $form)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('user_courses', $form);
+    }
+
     /**
      * Get agent payment gateway details based on un_id
      *
