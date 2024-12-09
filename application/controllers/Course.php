@@ -65,13 +65,18 @@ class Course extends CI_Controller
 
         foreach ($myGatewayList as $gateway) {
             $courseRowData = $this->Course_model->getOrderListByType($type, $gateway['un_id']);
-
             foreach ($courseRowData as $c) {
                 array_push($fArray, $c);
             }
         }
 
+        // Sort by created_at in descending order
+        usort($fArray, function ($a, $b) {
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
+        });
 
+        // Limit the results to the latest 10
+        $fArray = array_slice($fArray, 0, 10);
 
         $finalArray = array();
 
@@ -98,6 +103,7 @@ class Course extends CI_Controller
 
             $singleArray['trx'] = $course['trx'];
             $singleArray['ss'] = 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg';
+            $singleArray['created_at'] = $course['created_at'];
 
             array_push($finalArray, $singleArray);
         }
@@ -108,6 +114,7 @@ class Course extends CI_Controller
         // Load the view with data
         $this->load->view('dashboard/order_list', $data);
     }
+
 
 
     function acceptCoursePayment($id)
