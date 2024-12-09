@@ -71,4 +71,12 @@ class Basic_model extends CI_Model
     {
         $this->db->insert('income', $form);
     }
+
+
+    function agentGatewayList($agentId)
+    {
+        $this->db->where('agent_un_id', $agentId);
+        $this->db->where('status', 1);
+        return $this->db->get('agent_payment_gateway')->result_array();
+    }
 }

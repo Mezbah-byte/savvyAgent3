@@ -28,9 +28,10 @@ class Course_model extends CI_Model
      * @param string $type
      * @return array
      */
-    public function getOrderListByType($type)
+    public function getOrderListByType($type, $gatewayId)
     {
         $this->db->where('status', $type);
+        $this->db->where('gateway_id', $gatewayId);
         $query = $this->db->get('user_courses');
         return $query->result_array();
     }

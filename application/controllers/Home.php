@@ -27,13 +27,11 @@ class Home extends CI_Controller
 
     private function checkLogin()
     {
-        // Check if the user is logged in
         return $this->isLoggedIn;
     }
 
     private function globalData()
     {
-        // Fetch global data from the Basic model
         $data = array();
         $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
 
@@ -42,7 +40,6 @@ class Home extends CI_Controller
 
     public function index()
     {
-        // Redirect to the home method if logged in
         if (!$this->checkLogin()) {
             redirect(base_url());
         }
@@ -51,15 +48,12 @@ class Home extends CI_Controller
 
     public function home()
     {
-        // Ensure the user is logged in
         if (!$this->checkLogin()) {
             redirect(base_url());
         }
 
-        // Fetch global data
         $data = $this->globalData();
 
-        // Load the home view with data
         $this->load->view('dashboard/home', $data);
     }
 

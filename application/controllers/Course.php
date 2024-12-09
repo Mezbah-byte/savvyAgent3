@@ -59,11 +59,23 @@ class Course extends CI_Controller
             redirect(base_url());
         }
 
-        $courseRowData = $this->Course_model->getOrderListByType($type);
+        $myGatewayList = $this->Basic_model->agentGatewayList($this->session->userdata('userUnId'));
+
+        $fArray = array();
+
+        foreach ($myGatewayList as $gateway) {
+            $courseRowData = $this->Course_model->getOrderListByType($type, $gateway['un_id']);
+
+            foreach ($courseRowData as $c) {
+                array_push($fArray, $c);
+            }
+        }
+
+
 
         $finalArray = array();
 
-        foreach ($courseRowData as $course) {
+        foreach ($fArray as $course) {
             $singleArray = array();
 
             // Fetch user, course, and gateway details
@@ -249,7 +261,12 @@ class Course extends CI_Controller
 
     function cancelCoursePayment($id)
     {
+        $form = array();
+        $form['status'] = 2;
+        $this->Course_model->updateCourseOrder($id, $form);
 
+        $this->session->set_flashdata('success', 'Order Canceled!');
+        redirect(base_url() . 'orderList/0');
     }
 
 
