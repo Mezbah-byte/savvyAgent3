@@ -105,7 +105,7 @@ class Course extends CI_Controller
         $quantity = $getCourseOrderDetails['quantity'];
         $customerDetails = $this->Basic_model->getUserDetails($getCourseOrderDetails['user_un_id']);
 
-        $uData = $this->Basic_model->getUserDetailsByUsername($customerDetails['refered_by']);
+        $uData = $this->Basic_model->getUserDetails($customerDetails['refered_by']);
         $courseDetails = $this->Course_model->getCourseDetails($getCourseOrderDetails['course_id']);
 
         if ($customerDetails['type'] == "open") {
