@@ -72,6 +72,7 @@ class Course extends CI_Controller
             $getAgentGatewayDetails = $this->Course_model->getAgentGatewayDetails($course['gateway_id']);
 
             // Populate data for each order
+            $singleArray['id'] = $course['id'];
             $singleArray['name'] = $userData['first_name'];
             $singleArray['username'] = $userData['username'];
             $singleArray['email'] = $userData['email'];
