@@ -76,7 +76,7 @@ class Course extends CI_Controller
         });
 
         // Limit the results to the latest 10
-        $fArray = array_slice($fArray, 0, 10);
+        // $fArray = array_slice($fArray, 0, 10);
 
         $finalArray = array();
 
