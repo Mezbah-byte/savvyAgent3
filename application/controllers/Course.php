@@ -59,7 +59,7 @@ class Course extends CI_Controller
             redirect(base_url());
         }
 
-        $courseRowData = $this->Course_model->getOrderListByType(1);
+        $courseRowData = $this->Course_model->getOrderListByType($type);
 
         $finalArray = array();
 
