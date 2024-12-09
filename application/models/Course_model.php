@@ -51,11 +51,7 @@ class Course_model extends CI_Model
     public function getCourseDetails($unId)
     {
         $this->db->where('un_id', $unId);
-        $query = $this->db->get('course'); // 'course' is the table name
-        if ($query->num_rows() > 0) {
-            return $query->row_array(); // Return the course details as an associative array
-        }
-        return false; // Return false if no record is found
+        return $this->db->get('course')->row_array();
     }
 
     /**

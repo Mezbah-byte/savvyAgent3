@@ -213,7 +213,7 @@ class Course extends CI_Controller
 
                     if ($bonus != 0) {
                         $form = array();
-                        $form['from_user'] = $customerDetails['user_un_id'];
+                        $form['from_user'] = $customerDetails['un_id'];
                         $form['to_user'] = $userDetails['un_id'];
                         $form['amount'] = ($bonus * $quantity);
                         $form['package_id'] = $getCourseOrderDetails['course_id'];
