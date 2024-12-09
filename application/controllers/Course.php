@@ -79,7 +79,7 @@ class Course extends CI_Controller
             $singleArray['userImg'] = $userData['img'] == ""
                 ? 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg'
                 : $userData['img'];
-            $singleArray['courseName'] = $courseDetails['title'];
+            $singleArray['courseName'] = isset($courseDetails['title']) ? $courseDetails['title'] : "Unknown";
             $singleArray['paymentMethod'] = isset($getAgentGatewayDetails['name']) ? $getAgentGatewayDetails['name'] : "Unknown";
             $singleArray['paymentMethodIcon'] = isset($getAgentGatewayDetails['image']) ? $getAgentGatewayDetails['image'] : "https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg";
 

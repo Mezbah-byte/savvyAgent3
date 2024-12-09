@@ -30,7 +30,7 @@ class Course_model extends CI_Model
      */
     public function getOrderListByType($type)
     {
-        // Assuming $type might be used later, it's included as a parameter
+        $this->db->where('status', $type);
         $query = $this->db->get('user_courses'); // 'user_courses' is the table name
         return $query->result_array(); // Return all results as an array
     }
