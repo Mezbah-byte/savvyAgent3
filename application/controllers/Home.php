@@ -68,7 +68,7 @@ class Home extends CI_Controller
                     array_push($pendingOrderList, $c);
                 } else if ($c['status'] == 1) {
                     array_push($successfullOrderList, $c);
-                } else if ($c['status'] = 2) {
+                } else if ($c['status'] == 2) {
                     array_push($canceledOrderList, $c);
                 }
 
