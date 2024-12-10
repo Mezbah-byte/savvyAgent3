@@ -13,7 +13,7 @@ class Home extends CI_Controller
         // Load session and necessary models
         $this->load->library('session');
         $this->load->helper('url');
-        $this->load->model('Basic_model', 'Course_model');
+        $this->load->model(['Basic_model', 'Course_model']);
 
         // Get session data
         $this->userUnId = $this->session->userdata('userUnId');
