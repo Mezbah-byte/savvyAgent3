@@ -109,12 +109,29 @@
       </ul>
     </li>
 
+
     <li class="menu-item">
-      <a href="<?php echo base_url('myGateways') ?>" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-home-circle"></i>
-        <div data-i18n="Products">My Payment Gateways</div>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-layout"></i>
+        <div data-i18n="My Payment Gateways">My Payment Gateways</div>
       </a>
+
+      <ul class="menu-sub">
+
+        <li class="menu-item">
+          <a href="<?php echo base_url('myGateways/1') ?>" class="menu-link">
+            <div data-i18n="Active Gateways">Active Gateways</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="<?php echo base_url('myGateways/0') ?>" class="menu-link">
+            <div data-i18n="Inactive Gateways">Inactive Gateways</div>
+          </a>
+        </li>
+
+      </ul>
     </li>
+
 
 
     <!-- Layouts -->
