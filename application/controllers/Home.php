@@ -13,7 +13,7 @@ class Home extends CI_Controller
         // Load session and necessary models
         $this->load->library('session');
         $this->load->helper('url');
-        $this->load->model('Basic_model'); // Load BasicModel
+        $this->load->model('Basic_model', 'Course_model');
 
         // Get session data
         $this->userUnId = $this->session->userdata('userUnId');
@@ -21,7 +21,7 @@ class Home extends CI_Controller
 
         // Check login
         if (!$this->checkLogin()) {
-            redirect(base_url()); // Redirect to login page if not logged in
+            redirect(base_url());
         }
     }
 
@@ -52,7 +52,34 @@ class Home extends CI_Controller
             redirect(base_url());
         }
 
+
+        $myGatewayList = $this->Basic_model->agentGatewayList($this->session->userdata('userUnId'));
+
+        $successfullOrderList = array();
+        $pendingOrderList = array();
+        $canceledOrderList = array();
+
+
+
+        foreach ($myGatewayList as $gateway) {
+            $courseRowData = $this->Course_model->getOrderListByType('all', $gateway['un_id']);
+            foreach ($courseRowData as $c) {
+                if ($c['status'] = 0) {
+                    array_push($pendingOrderList, $c);
+                } else if ($c['status'] == 1) {
+                    array_push($successfullOrderList, $c);
+                } else if ($c['status'] = 2) {
+                    array_push($canceledOrderList, $c);
+                }
+
+            }
+        }
+
         $data = $this->globalData();
+        $data['successfullOrderList'] = $successfullOrderList;
+        $data['pendingOrderList'] = $pendingOrderList;
+        $data['canceledOrderList'] = $canceledOrderList;
+        $data['allOrders'] = $courseRowData;
 
         $this->load->view('dashboard/home', $data);
     }
