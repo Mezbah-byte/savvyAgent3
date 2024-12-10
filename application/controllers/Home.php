@@ -64,7 +64,7 @@ class Home extends CI_Controller
         foreach ($myGatewayList as $gateway) {
             $courseRowData = $this->Course_model->getOrderListByType('all', $gateway['un_id']);
             foreach ($courseRowData as $c) {
-                if ($c['status'] = 0) {
+                if ($c['status'] == 0) {
                     array_push($pendingOrderList, $c);
                 } else if ($c['status'] == 1) {
                     array_push($successfullOrderList, $c);
