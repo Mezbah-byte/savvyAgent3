@@ -80,18 +80,18 @@ class Home extends CI_Controller
         $data['pendingOrderList'] = $pendingOrderList;
         $data['canceledOrderList'] = $canceledOrderList;
         $data['allOrders'] = $courseRowData;
+        $data['myGatewayList'] = $myGatewayList;
 
         $this->load->view('dashboard/home', $data);
     }
 
-    public function productsList()
+    function myGateways($status)
     {
-        // Ensure the user is logged in
-        if (!$this->checkLogin()) {
-            redirect(base_url());
-        }
+        $myGatewayList = $this->Basic_model->agentGatewayListByStatus($this->session->userdata('userUnId'), $status);
 
-        // Example response for another method
-        echo "This is another method. User un_id: " . $this->userUnId;
+        $data = $this->globalData();
+        $data['myGatewayList'] = $myGatewayList;
+
+        $this->load->view('dashboard/gateway_list', $data);
     }
 }

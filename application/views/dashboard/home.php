@@ -80,13 +80,9 @@
               <div class="avatar me-2">
                 <span class="avatar-initial rounded bg-label-info"><i class='bx bx-time-five'></i></span>
               </div>
-              <h4 class="ms-1 mb-0">13</h4>
+              <h4 class="ms-1 mb-0"><?php echo count($myGatewayList); ?></h4>
             </div>
-            <p class="mb-1">Late vehicles</p>
-            <p class="mb-0">
-              <span class="fw-medium me-1">-2.5%</span>
-              <small class="text-muted">than last week</small>
-            </p>
+            <p class="mb-1">My total Gateways</p>
           </div>
         </div>
       </div>

@@ -109,6 +109,13 @@
       </ul>
     </li>
 
+    <li class="menu-item">
+      <a href="<?php echo base_url('myGateways') ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <div data-i18n="Products">My Payment Gateways</div>
+      </a>
+    </li>
+
 
     <!-- Layouts -->
     <!-- <li class="menu-item">

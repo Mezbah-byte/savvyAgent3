@@ -76,7 +76,15 @@ class Basic_model extends CI_Model
     function agentGatewayList($agentId)
     {
         $this->db->where('agent_un_id', $agentId);
-        $this->db->where('status', 1);
+        // $this->db->where('status', 1);
+        return $this->db->get('agent_payment_gateway')->result_array();
+    }
+
+
+    function agentGatewayListByStatus($agentId, $status)
+    {
+        $this->db->where('agent_un_id', $agentId);
+        $this->db->where('status', $status);
         return $this->db->get('agent_payment_gateway')->result_array();
     }
 }
