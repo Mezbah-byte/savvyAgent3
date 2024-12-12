@@ -27,7 +27,7 @@
                         <tr>
                             <th>Gateway</th>
                             <th>Receiver Address</th>
-                            <th>Description</th>
+                            <th>API Type</th>
                             <!-- <th>Unit</th> -->
                             <th>Actions</th>
                         </tr>
@@ -40,7 +40,12 @@
                                 <td><img src="<?php echo $gateway['image']; ?>" height="50px" width="50px" /> <span
                                         class="fw-medium"><?php echo $gateway['name'] ?></span></td>
                                 <td><?php echo $gateway['receiver_address'] . ' ৳'; ?></td>
-                                <td><?php echo $gateway['description'] . ' ৳'; ?></td>
+                                <td><?php if ($gateway['type'] == 'api') { ?>
+                                        <span class="badge bg-label-success me-1">API</span>
+                                    <?php } else { ?>
+                                        <span class="badge bg-label-primary me-1">Manual</span>
+                                    <?php } ?>
+                                </td>
                                 <!-- <td><?php echo $course['stock']; ?></td> -->
                                 <td>
                                     <div class="dropdown">

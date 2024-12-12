@@ -76,11 +76,11 @@ class Home extends CI_Controller
         }
 
         $data = $this->globalData();
-        $data['successfullOrderList'] = $successfullOrderList;
-        $data['pendingOrderList'] = $pendingOrderList;
-        $data['canceledOrderList'] = $canceledOrderList;
-        $data['allOrders'] = $courseRowData;
-        $data['myGatewayList'] = $myGatewayList;
+        $data['successfullOrderList'] = $successfullOrderList == null ? [] : $successfullOrderList;
+        $data['pendingOrderList'] = $pendingOrderList == null ? [] : $pendingOrderList;
+        $data['canceledOrderList'] = $canceledOrderList == null ? [] : $canceledOrderList;
+        $data['allOrders'] = $courseRowData == null ? [] : $courseRowData;
+        $data['myGatewayList'] = $myGatewayList == null ? [] : $myGatewayList;
 
         $this->load->view('dashboard/home', $data);
     }
