@@ -59,7 +59,7 @@ class Home extends CI_Controller
         $pendingOrderList = array();
         $canceledOrderList = array();
 
-
+        $courseRowData = array();
 
         foreach ($myGatewayList as $gateway) {
             $courseRowData = $this->Course_model->getOrderListByType('all', $gateway['un_id']);

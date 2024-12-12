@@ -32,7 +32,8 @@
             </div>
             <p class="mb-1">Pending Orders</p>
             <p class="mb-0">
-              <span class="fw-medium me-1"><?php echo (count($pendingOrderList) * 100) / count($allOrders) ?>%</span>
+              <span
+                class="fw-medium me-1"><?php echo (count($allOrders) > 0) ? (count($pendingOrderList) * 100) / count($allOrders) : 0; ?>%</span>
               <small class="text-muted">of all orders</small>
             </p>
           </div>
@@ -50,7 +51,7 @@
             <p class="mb-1">Successfull Orders</p>
             <p class="mb-0">
               <span
-                class="fw-medium me-1"><?php echo (count($successfullOrderList) * 100) / count($allOrders) ?>%</span>
+                class="fw-medium me-1"><?php echo (count($allOrders) > 0) ? (count($successfullOrderList) * 100) / count($allOrders) : 0; ?>%</span>
               <small class="text-muted">of all orders</small>
             </p>
           </div>
@@ -67,7 +68,8 @@
             </div>
             <p class="mb-1">Canceled Orders</p>
             <p class="mb-0">
-              <span class="fw-medium me-1"><?php echo (count($canceledOrderList) * 100) / count($allOrders) ?>%</span>
+              <span
+                class="fw-medium me-1"><?php echo (count($allOrders) > 0) ? (count($canceledOrderList) * 100) / count($allOrders) : 0; ?>%</span>
               <small class="text-muted">of all orders</small>
             </p>
           </div>
