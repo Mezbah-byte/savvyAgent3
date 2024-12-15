@@ -98,6 +98,9 @@ class Course extends CI_Controller
                 ? 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg'
                 : $userData['img'];
             $singleArray['courseName'] = isset($courseDetails['title']) ? $courseDetails['title'] : "Unknown";
+            $singleArray['amount'] = isset($courseDetails['price']) ? $courseDetails['price'] : 0;
+            $singleArray['quantity'] = $course['quantity'];
+            $singleArray['courseType'] = $courseDetails['type'];
             $singleArray['paymentMethod'] = isset($getAgentGatewayDetails['name']) ? $getAgentGatewayDetails['name'] : "Unknown";
             $singleArray['paymentMethodIcon'] = isset($getAgentGatewayDetails['image']) ? $getAgentGatewayDetails['image'] : "https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg";
 

@@ -29,6 +29,15 @@
               <th>User Name</th>
               <th>Phone Number</th>
               <th>Course Name</th>
+
+
+              <th>Course Price</th>
+              <th>Course Type</th>
+              <th>Course Quantity</th>
+              <th>Total Amount</th>
+
+
+
               <th>Payment Method</th>
               <th>TRX</th>
               <th>Screen Shot</th>
@@ -45,6 +54,16 @@
                 <td><?php echo $data['name'] . ' (' . $data['username'] . ')'; ?></td>
                 <td><?php echo $data['phoneNumber']; ?></td>
                 <td><?php echo $data['courseName']; ?></td>
+
+
+                <td><?php echo $data['amount']; ?></td>
+                <td><?php echo $data['courseType']; ?></td>
+                <td><?php echo $data['quantity']; ?></td>
+                <td><?php echo $data['amount'] * $data['quantity']; ?></td>
+
+
+
+
                 <td><img src="<?php echo $data['paymentMethodIcon']; ?>" height="30px"
                     width="30px" /><?php echo $data['paymentMethod']; ?></td>
                 <td><?php echo $data['trx']; ?></td>
