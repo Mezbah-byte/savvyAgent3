@@ -136,7 +136,7 @@ class Course extends CI_Controller
         $uData = $this->Basic_model->getUserDetails($customerDetails['refered_by']);
         $courseDetails = $this->Course_model->getCourseDetails($getCourseOrderDetails['course_id']);
 
-        if ($customerDetails['type'] == "open") {
+        if ($customerDetails['type'] == "open" || $customerDetails['type'] == "regularMember") {
             $data = array();
             $data['packageId'] = $getCourseOrderDetails['course_id'];
             $data['refered_by'] = $uData['un_id'];
