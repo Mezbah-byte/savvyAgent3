@@ -105,7 +105,7 @@ class Course extends CI_Controller
             $singleArray['paymentMethodIcon'] = isset($getAgentGatewayDetails['image']) ? $getAgentGatewayDetails['image'] : "https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg";
 
             $singleArray['trx'] = $course['trx'];
-            $singleArray['ss'] = 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg';
+            $singleArray['ss'] = isset($course['ss']) ? $course['quantity'] : 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg';
             $singleArray['created_at'] = $course['created_at'];
 
             array_push($finalArray, $singleArray);
