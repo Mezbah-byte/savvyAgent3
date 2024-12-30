@@ -31,11 +31,13 @@
               <th>Course Name</th>
 
 
-              <th>Course Price</th>
               <th>Course Type</th>
+              <th>Course Price</th>
               <th>Course Quantity</th>
               <th>Total Amount</th>
 
+              <th>Requested at</th>
+              <th>Worked at</th>
 
 
               <th>Payment Method</th>
@@ -56,12 +58,14 @@
                 <td><?php echo $data['courseName']; ?></td>
 
 
-                <td><?php echo $data['amount']; ?></td>
                 <td><?php echo $data['courseType']; ?></td>
+                <td><?php echo $data['amount']; ?></td>
                 <td><?php echo $data['quantity']; ?></td>
                 <td><?php echo $data['amount'] * $data['quantity']; ?></td>
 
 
+                <td><?php echo $data['created_at']; ?></td>
+                <td><?php echo $data['updated_at']; ?></td>
 
 
                 <td><img src="<?php echo $data['paymentMethodIcon']; ?>" height="30px"

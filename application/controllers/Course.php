@@ -148,6 +148,7 @@ class Course extends CI_Controller
 
         $form = array();
         $form['status'] = 1;
+        $form['updated_at'] = date('Y-m-d H:i:s');
         $this->Course_model->updateCourseOrder($id, $form);
 
 
