@@ -108,6 +108,7 @@ class Course extends CI_Controller
             $singleArray['ss'] = isset($course['ssLink']) ? $course['ssLink'] : 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg';
             $singleArray['created_at'] = $course['created_at'];
             $singleArray['updated_at'] = $course['updated_at'];
+            $singleArray['status'] = $course['status'];
 
             array_push($finalArray, $singleArray);
         }
