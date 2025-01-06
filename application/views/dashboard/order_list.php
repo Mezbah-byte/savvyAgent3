@@ -231,7 +231,7 @@
       $('#courseTable').DataTable({
         paging: true,
         searching: true,
-        ordering: true,
+        ordering: false,
         lengthChange: true,
         pageLength: 10,
         responsive: true,
