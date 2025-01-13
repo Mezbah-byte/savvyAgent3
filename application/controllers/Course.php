@@ -141,9 +141,12 @@ class Course extends CI_Controller
         if ($customerDetails['type'] == "open" || $customerDetails['type'] == "regularMember") {
             $data = array();
             $data['packageId'] = $getCourseOrderDetails['course_id'];
-            $data['refered_by'] = $uData['un_id'];
-            $data['placement_id'] = !empty($this->get_network_by_level($uData['un_id'], 0)) ? count($this->Basic_model->team_list($uData['un_id'])) < 2 ? $uData['un_id'] : $this->get_network_by_level($uData['un_id'], 0)[0]['un_id'] : $uData['un_id'];
-            $form['placement_time'] = date('Y-m-d H:i:s');
+            if ($customerDetails['type'] == "open") {
+                $data['refered_by'] = $uData['un_id'];
+                $data['placement_id'] = !empty($this->get_network_by_level($uData['un_id'], 0)) ? count($this->Basic_model->team_list($uData['un_id'])) < 2 ? $uData['un_id'] : $this->get_network_by_level($uData['un_id'], 0)[0]['un_id'] : $uData['un_id'];
+                $form['placement_time'] = date('Y-m-d H:i:s');
+            }
+
             $data['type'] = $courseDetails['type'];
             $this->Basic_model->updateCustomer($customerDetails['un_id'], $data);
         }
