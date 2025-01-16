@@ -307,4 +307,30 @@ class Course extends CI_Controller
 
         return $network;
     }
+
+
+    function buyCourse($courseId)
+    {
+        $courseDetsild = $this->Course_model->getCourseDetails($courseId);
+        $this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric');
+        if ($this->form_validation->run() == FALSE) {
+            $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
+            $data['courseDetails'] = $courseDetsild;
+            $this->load->view('dashboard/buy_course', $data);
+        } else {
+            $form = array();
+            $form['user_un_id'] = $this->userUnId;
+            $form['course_id'] = $courseId;
+            $form['quantity'] = $this->input->post('quantity');
+            $form['gateway_id'] = $this->input->post('gateway_id');
+            $form['trx'] = $this->input->post('trx');
+            $form['ssLink'] = $this->input->post('ssLink');
+            $form['status'] = 0;
+            $form['created_at'] = date('Y-m-d H:i:s');
+            $form['updated_at'] = date('Y-m-d H:i:s');
+            $this->Course_model->buyCourse($form);
+            $this->session->set_flashdata('success', 'Course bought successfully!');
+            redirect(base_url() . 'courseList');
+        }
+    }
 }

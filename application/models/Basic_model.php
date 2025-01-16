@@ -87,4 +87,33 @@ class Basic_model extends CI_Model
         $this->db->where('status', $status);
         return $this->db->get('agent_payment_gateway')->result_array();
     }
+
+    function myCourseList($status, $courseId, $agentId)
+    {
+        $this->db->where('status', $status);
+        $this->db->where('course_un_id', $courseId);
+        $this->db->where('agent_un_id', $agentId);
+        return $this->db->get('agentcourses')->result_array();
+    }
+
+    function todayTotalSell($gatewayId)
+    {
+        $this->db->where('gateway_id', $gatewayId);
+        $this->db->where('DATE(created_at)', date('Y-m-d'));
+        return $this->db->get('user_courses')->result_array();
+    }
+
+    function courseOrderListByGateway($courseId, $gatewayId)
+    {
+        $this->db->where('course_id', $courseId);
+        $this->db->where('gateway_id', $gatewayId);
+        return $this->db->get('user_courses')->result_array();
+    }
+
+    function changeGatewayStatus($gatewayId, $form)
+    {
+        $this->db->where('un_id', $gatewayId);
+        $this->db->update('agent_payment_gateway', $form);
+    }
+
 }

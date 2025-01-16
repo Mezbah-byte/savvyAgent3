@@ -75,12 +75,31 @@ class Home extends CI_Controller
             }
         }
 
+        $getActiveCourse = $this->Course_model->getActiveCourse();
+
+        $courseList = array();
+
+        foreach ($getActiveCourse as $course) {
+            $myCoursesForThisCourse = $this->Basic_model->myCourseList(1, $course['un_id'], $this->session->userdata('userUnId'));
+            $course['myCoursesCount'] = count($myCoursesForThisCourse);
+
+            $myGatewayList = $this->Basic_model->agentGatewayList($this->session->userdata('userUnId'));
+            $courseSellList = array();
+            foreach ($myGatewayList as $gateway) {
+                $courseOrderListByGateway = $this->Basic_model->courseOrderListByGateway($course['un_id'], $gateway['un_id']);
+                $courseSellList = array_merge($courseSellList, $courseOrderListByGateway);
+            }
+            $course['courseSellListCount'] = count($courseSellList);
+            array_push($courseList, $course);
+        }
+
         $data = $this->globalData();
         $data['successfullOrderList'] = $successfullOrderList == null ? [] : $successfullOrderList;
         $data['pendingOrderList'] = $pendingOrderList == null ? [] : $pendingOrderList;
         $data['canceledOrderList'] = $canceledOrderList == null ? [] : $canceledOrderList;
         $data['allOrders'] = $courseRowData == null ? [] : $courseRowData;
         $data['myGatewayList'] = $myGatewayList == null ? [] : $myGatewayList;
+        $data['courseList'] = $courseList == null ? [] : $courseList;
 
         $this->load->view('dashboard/home', $data);
     }
@@ -93,5 +112,12 @@ class Home extends CI_Controller
         $data['myGatewayList'] = $myGatewayList;
 
         $this->load->view('dashboard/gateway_list', $data);
+    }
+
+    function changeGatewayStatus($gatewayId, $status)
+    {
+        $form = array('status' => $status);
+        $this->Basic_model->changeGatewayStatus($gatewayId, $form);
+        redirect(base_url() . 'myGateways/1');
     }
 }
