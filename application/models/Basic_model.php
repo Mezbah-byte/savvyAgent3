@@ -116,4 +116,9 @@ class Basic_model extends CI_Model
         $this->db->update('agent_payment_gateway', $form);
     }
 
+    function create_bonus_income($form)
+    {
+        $this->db->insert('bonus_income', $form);
+    }
+
 }
