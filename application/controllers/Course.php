@@ -175,7 +175,7 @@ class Course extends CI_Controller
                             if($userDetails['current_post_id'] > 19){
                                 $ibonus = 500*$quantity;
                             } else{
-                                $ibonus = 200;
+                                $ibonus = 200*$quantity;
                             }
                         } else{
                             $ibonus = 0;
