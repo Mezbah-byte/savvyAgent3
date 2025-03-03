@@ -175,7 +175,7 @@ class Course extends CI_Controller
                             if($userDetails['current_post_id'] > 19){
                                 $ibonus = 500*$quantity;
                             } else{
-                                $ibonus = 0;
+                                $ibonus = 200;
                             }
                         } else{
                             $ibonus = 0;
@@ -187,19 +187,17 @@ class Course extends CI_Controller
                         $this->Basic_model->updateCustomer($userDetails['un_id'], $form);
 
                         if($courseDetails['type'] == "premium"){
-                            if($userDetails['current_post_id'] > 19){
-                                $bincome = array();
-                                $bincome['from_user'] = $invoiceDetails['user_un_id'];
-                                $fbincomeorm['to_user'] = $userDetails['un_id'];
-                                $bincome['amount'] = $iBonus;
-                                $bincome['package_id'] = $invoiceDetails['package_id'];
-                                $bincome['generation'] = $a;
-                                $bincome['source'] = 'bonus_income';
-                                $bincome['created_at'] = date('Y-m-d H:i:s');
-                                $bincome['title'] = 'Eid Bonus';
-                                $bincome['details'] = 'Eid Bonus from SavvyBD LTD';
-                                $this->Basic_model->create_bonus_income($form);
-                            }
+                            $bincome = array();
+                            $bincome['from_user'] = $invoiceDetails['user_un_id'];
+                            $fbincomeorm['to_user'] = $userDetails['un_id'];
+                            $bincome['amount'] = $iBonus;
+                            $bincome['package_id'] = $invoiceDetails['package_id'];
+                            $bincome['generation'] = $a;
+                            $bincome['source'] = 'bonus_income';
+                            $bincome['created_at'] = date('Y-m-d H:i:s');
+                            $bincome['title'] = 'Eid Bonus';
+                            $bincome['details'] = 'Eid Bonus from SavvyBD LTD';
+                            $this->Basic_model->create_bonus_income($form);
                         }
                     } else if ($a == 1) {
                         // if ($userDetails['current_post_id'] > 9) {
