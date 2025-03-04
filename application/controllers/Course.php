@@ -188,7 +188,7 @@ class Course extends CI_Controller
 
                         if($courseDetails['type'] == "premium"){
                             $bincome = array();
-                            $bincome['from_user'] = $customerDetails['user_un_id'];
+                            $bincome['from_user'] = $customerDetails['un_id'];
                             $fbincomeorm['to_user'] = $userDetails['un_id'];
                             $bincome['amount'] = $iBonus;
                             $bincome['package_id'] = $getCourseOrderDetails['course_id'];
