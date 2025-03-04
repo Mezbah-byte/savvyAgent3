@@ -196,7 +196,7 @@ class Course extends CI_Controller
                             $bincome['source'] = 'bonus_income';
                             $bincome['created_at'] = date('Y-m-d H:i:s');
                             $bincome['title'] = 'Eid Bonus';
-                            $bincome['details'] = 'Eid Bonus from SavvyBD LTD';
+                            $bincome['details'] = 'Eid Bonus from My Savvy BD';
                             $this->Basic_model->create_bonus_income($bincome);
                         }
                     } else if ($a == 1) {
