@@ -190,7 +190,7 @@ class Course extends CI_Controller
                             $bincome = array();
                             $bincome['from_user'] = $customerDetails['un_id'];
                             $fbincomeorm['to_user'] = $userDetails['un_id'];
-                            $bincome['amount'] = $iBonus;
+                            $bincome['amount'] = $ibonus;
                             $bincome['package_id'] = $getCourseOrderDetails['course_id'];
                             $bincome['generation'] = $a;
                             $bincome['source'] = 'bonus_income';
