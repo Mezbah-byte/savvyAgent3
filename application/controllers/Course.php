@@ -197,7 +197,7 @@ class Course extends CI_Controller
                             $bincome['created_at'] = date('Y-m-d H:i:s');
                             $bincome['title'] = 'Eid Bonus';
                             $bincome['details'] = 'Eid Bonus from SavvyBD LTD';
-                            $this->Basic_model->create_bonus_income($form);
+                            $this->Basic_model->create_bonus_income($bincome);
                         }
                     } else if ($a == 1) {
                         // if ($userDetails['current_post_id'] > 9) {
