@@ -53,6 +53,7 @@ class Course extends CI_Controller
         $this->load->view('dashboard/course_list', $data);
     }
 
+
     public function orderList($type)
     {
         if (!$this->checkLogin()) {
@@ -75,18 +76,21 @@ class Course extends CI_Controller
             return strtotime($b['created_at']) - strtotime($a['created_at']);
         });
 
-        // Limit the results to the latest 10
-        // $fArray = array_slice($fArray, 0, 10);
-
         $finalArray = array();
 
         foreach ($fArray as $course) {
-            $singleArray = array();
-
-            // Fetch user, course, and gateway details
+            // Fetch user details
             $userData = $this->Basic_model->getUserDetails($course['user_un_id']);
+
+            // If no user data is found, skip this order record
+            if (!$userData) {
+                continue;
+            }
+
             $courseDetails = $this->Course_model->getCourseDetails($course['course_id']);
             $getAgentGatewayDetails = $this->Course_model->getAgentGatewayDetails($course['gateway_id']);
+
+            $singleArray = array();
 
             // Populate data for each order
             $singleArray['id'] = $course['id'];
@@ -94,25 +98,26 @@ class Course extends CI_Controller
             $singleArray['username'] = $userData['username'];
             $singleArray['email'] = $userData['email'];
             $singleArray['phoneNumber'] = $userData['phone_number'];
-            $singleArray['userImg'] = $userData['img'] == ""
-                ? 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg'
+            $singleArray['userImg'] = $userData['img'] == "" 
+                ? 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg' 
                 : $userData['img'];
             $singleArray['courseName'] = isset($courseDetails['title']) ? $courseDetails['title'] : "Unknown";
             $singleArray['amount'] = isset($courseDetails['price']) ? $courseDetails['price'] : 0;
             $singleArray['quantity'] = $course['quantity'];
-            $singleArray['courseType'] = $courseDetails['type'];
+            $singleArray['courseType'] = isset($courseDetails['type']) ? $courseDetails['type'] : "";
             $singleArray['paymentMethod'] = isset($getAgentGatewayDetails['name']) ? $getAgentGatewayDetails['name'] : "Unknown";
-            $singleArray['paymentMethodIcon'] = isset($getAgentGatewayDetails['image']) ? $getAgentGatewayDetails['image'] : "https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg";
-
+            $singleArray['paymentMethodIcon'] = isset($getAgentGatewayDetails['image']) 
+                ? $getAgentGatewayDetails['image'] 
+                : 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg';
             $singleArray['trx'] = $course['trx'];
-            $singleArray['ss'] = isset($course['ssLink']) ? $course['ssLink'] : 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg';
+            $singleArray['ss'] = isset($course['ssLink']) 
+                ? $course['ssLink'] 
+                : 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg';
             $singleArray['created_at'] = $course['created_at'];
             $singleArray['updated_at'] = $course['updated_at'];
             $singleArray['status'] = $course['status'];
 
-            if($userData != null){
-                array_push($finalArray, $singleArray);
-            }
+            array_push($finalArray, $singleArray);
         }
 
         $data['datas'] = $finalArray;
@@ -121,6 +126,71 @@ class Course extends CI_Controller
         // Load the view with data
         $this->load->view('dashboard/order_list', $data);
     }
+
+
+    // public function orderList($type)
+    // {
+    //     if (!$this->checkLogin()) {
+    //         redirect(base_url());
+    //     }
+
+    //     $myGatewayList = $this->Basic_model->agentGatewayList($this->session->userdata('userUnId'));
+
+    //     $fArray = array();
+
+    //     foreach ($myGatewayList as $gateway) {
+    //         $courseRowData = $this->Course_model->getOrderListByType($type, $gateway['un_id']);
+    //         foreach ($courseRowData as $c) {
+    //             array_push($fArray, $c);
+    //         }
+    //     }
+
+    //     // Sort by created_at in descending order
+    //     usort($fArray, function ($a, $b) {
+    //         return strtotime($b['created_at']) - strtotime($a['created_at']);
+    //     });
+
+    //     // Limit the results to the latest 10
+    //     // $fArray = array_slice($fArray, 0, 10);
+
+    //     $finalArray = array();
+
+    //     foreach ($fArray as $course) {
+    //         $singleArray = array();
+
+    //         $userData = $this->Basic_model->getUserDetails($course['user_un_id']);
+    //         $courseDetails = $this->Course_model->getCourseDetails($course['course_id']);
+    //         $getAgentGatewayDetails = $this->Course_model->getAgentGatewayDetails($course['gateway_id']);
+
+    //         $singleArray['id'] = $course['id'];
+    //         $singleArray['name'] = $userData['first_name'];
+    //         $singleArray['username'] = $userData['username'];
+    //         $singleArray['email'] = $userData['email'];
+    //         $singleArray['phoneNumber'] = $userData['phone_number'];
+    //         $singleArray['userImg'] = $userData['img'] == ""
+    //             ? 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg'
+    //             : $userData['img'];
+    //         $singleArray['courseName'] = isset($courseDetails['title']) ? $courseDetails['title'] : "Unknown";
+    //         $singleArray['amount'] = isset($courseDetails['price']) ? $courseDetails['price'] : 0;
+    //         $singleArray['quantity'] = $course['quantity'];
+    //         $singleArray['courseType'] = $courseDetails['type'];
+    //         $singleArray['paymentMethod'] = isset($getAgentGatewayDetails['name']) ? $getAgentGatewayDetails['name'] : "Unknown";
+    //         $singleArray['paymentMethodIcon'] = isset($getAgentGatewayDetails['image']) ? $getAgentGatewayDetails['image'] : "https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg";
+
+    //         $singleArray['trx'] = $course['trx'];
+    //         $singleArray['ss'] = isset($course['ssLink']) ? $course['ssLink'] : 'https://img.freepik.com/premium-photo/screenshot-screen-showing-different-planets_1142283-336281.jpg';
+    //         $singleArray['created_at'] = $course['created_at'];
+    //         $singleArray['updated_at'] = $course['updated_at'];
+    //         $singleArray['status'] = $course['status'];
+
+    //         array_push($finalArray, $singleArray);
+    //     }
+
+    //     $data['datas'] = $finalArray;
+    //     $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
+
+    //     $this->load->view('dashboard/order_list', $data);
+    // }
 
 
 
