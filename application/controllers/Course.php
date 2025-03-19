@@ -110,7 +110,9 @@ class Course extends CI_Controller
             $singleArray['updated_at'] = $course['updated_at'];
             $singleArray['status'] = $course['status'];
 
-            array_push($finalArray, $singleArray);
+            if($userData != null){
+                array_push($finalArray, $singleArray);
+            }
         }
 
         $data['datas'] = $finalArray;
