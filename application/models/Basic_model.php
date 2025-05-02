@@ -62,17 +62,23 @@ class Basic_model extends CI_Model
     // }
 
     public function team_list($placement_id)
-    {
-        $this->db
+{
+    return $this->db
         ->select('c.*, MIN(up.created_at) AS first_package_date')
         ->from('customers AS c')
-        ->join('user_courses AS up', 'up.user_un_id = c.un_id', 'left')
+        // force user_un_id into general_ci so it matches c.un_id’s collation
+        ->join(
+           'user_courses AS up',
+           'up.user_un_id COLLATE utf8mb4_general_ci = c.un_id',
+           'left'
+        )
         ->where('c.placement_id', $placement_id)
         ->group_by('c.un_id')
-        ->order_by('first_package_date', 'ASC');  // earliest first
+        ->order_by('first_package_date', 'ASC')
+        ->get()
+        ->result_array();
+}
 
-        return $this->db->get()->result_array();
-    }
 
 
     function updateCustomer($un_id, $form)
