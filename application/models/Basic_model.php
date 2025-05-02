@@ -66,11 +66,12 @@ class Basic_model extends CI_Model
     return $this->db
         ->select('c.*, MIN(up.created_at) AS first_package_date')
         ->from('customers AS c')
-        // force user_un_id into general_ci so it matches c.un_id’s collation
+        // 4th param = FALSE disables escaping, so COLLATE stays in place
         ->join(
-           'user_courses AS up',
-           'up.user_un_id COLLATE utf8mb4_general_ci = c.un_id',
-           'left'
+          'user_courses AS up',
+          'up.user_un_id COLLATE utf8mb4_general_ci = c.un_id',
+          'left',
+          FALSE
         )
         ->where('c.placement_id', $placement_id)
         ->group_by('c.un_id')
