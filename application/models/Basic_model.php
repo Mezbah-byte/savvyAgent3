@@ -66,7 +66,7 @@ class Basic_model extends CI_Model
         $this->db
         ->select('c.*, MIN(up.created_at) AS first_package_date')
         ->from('customers AS c')
-        ->join('user_courses AS up', 'up.un_id = c.un_id', 'left')
+        ->join('user_courses AS up', 'up.user_un_id = c.un_id', 'left')
         ->where('c.placement_id', $placement_id)
         ->group_by('c.un_id')
         ->order_by('first_package_date', 'ASC');  // earliest first
