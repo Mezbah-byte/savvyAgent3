@@ -79,4 +79,11 @@ class Course_model extends CI_Model
         }
         return false; // Return false if no record is found
     }
+
+    function getPaymentGateway() {
+        $this->db->where('status', 1);
+        $this->db->where('diposit_working', 1);
+        $this->db->where('working', 1);
+        return $this->db->get('gateways')->result_array();
+    }
 }

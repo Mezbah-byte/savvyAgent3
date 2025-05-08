@@ -414,6 +414,8 @@ class Course extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
             $data['courseDetails'] = $courseDetsild;
+            $data['gatewayList'] = $this->Course_model->getPaymentGateway();
+            // echo json_encode($data);
             $this->load->view('dashboard/buy_course', $data);
         } else {
             $form = array();

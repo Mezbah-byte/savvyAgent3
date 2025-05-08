@@ -25,8 +25,8 @@ date_default_timezone_set('Asia/Dhaka');
 | a PHP script and you can easily do that on your own.
 |
 */
-// $config['base_url'] = 'http://localhost/savvyAgent3/';
-$config['base_url'] = 'https://agent.mysavvybd.com/';
+$config['base_url'] = 'http://localhost/savvyAgent3/';
+// $config['base_url'] = 'https://agent.mysavvybd.com/';
 
 /*
 |--------------------------------------------------------------------------
