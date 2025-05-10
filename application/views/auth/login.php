@@ -102,7 +102,7 @@
       />
 
                 </span>
-                <span class="app-brand-text demo h3 mb-0 fw-bold">Frest</span>
+                <span class="app-brand-text demo h3 mb-0 fw-bold">Savvy Agent</span>
               </a>
             </div>
             <!-- /Logo -->
