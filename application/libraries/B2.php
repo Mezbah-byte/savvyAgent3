@@ -4,8 +4,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use BackblazeB2\Client;
 
 class B2 {
+    /** @var CI_Controller **/
+    protected $CI;
+
+    /** @var Client **/
     protected $client;
+
+    /** @var string **/
     protected $bucketName;
+
+    /** @var string **/
     protected $downloadDomain;
 
     public function __construct() {
