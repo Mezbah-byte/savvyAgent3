@@ -39,12 +39,12 @@
     </li>
 
 
-    <li class="menu-item">
+    <!-- <li class="menu-item">
       <a href="<?php echo base_url('products') ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
         <div data-i18n="Products">Products</div>
       </a>
-    </li>
+    </li> -->
 
 
     <li class="menu-item">
