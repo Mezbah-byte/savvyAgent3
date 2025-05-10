@@ -88,7 +88,7 @@ class Course_model extends CI_Model
     }
 
     function buyCourseRequest($data) {
-        $this->db->insert('agentCourseBuyRequest', $data);
+        $this->db->insert('agentcoursebuyrequest', $data);
     }
 
 
