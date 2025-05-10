@@ -25,8 +25,8 @@ date_default_timezone_set('Asia/Dhaka');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/savvyAgent3/';
-// $config['base_url'] = 'https://agent.mysavvybd.com/';
+// $config['base_url'] = 'http://localhost/savvyAgent3/';
+$config['base_url'] = 'https://agent.mysavvybd.com/';
 
 /*
 |--------------------------------------------------------------------------
@@ -533,3 +533,5 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+$config['composer_autoload'] = FCPATH.'vendor/autoload.php';
+

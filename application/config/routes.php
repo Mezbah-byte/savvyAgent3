@@ -73,3 +73,5 @@ $route['buyCourse/(:any)'] = 'course/buyCourse/$1';
 
 $route['myGateways/(:any)'] = 'home/myGateways/$1';
 $route['changeGatewayStatus/(:any)/(:any)'] = 'home/changeGatewayStatus/$1/$2';
+
+$route['profile'] = 'Profile/profile';

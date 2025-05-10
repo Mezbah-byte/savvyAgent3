@@ -78,15 +78,16 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 
 
-	// 'username' => 'mysavvyb_main',
-	// 'password' => '5!.iR6WlzwU3R9',
-	// // 'database' => 'mysavvyb_dev_ecom',
-	// 'database' => 'mysavvyb_ecom',
+	'username' => 'mysavvyb_main',
+	'password' => '5!.iR6WlzwU3R9',
+	// 'database' => 'mysavvyb_dev_ecom',
+	'database' => 'mysavvyb_ecom',
 
 
-	'username' => 'root',
-	'password' => '',
-	'database' => 'ecom',
+	// 'username' => 'root',
+	// 'password' => '',
+	// 'database' => 'ecom',
+	
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

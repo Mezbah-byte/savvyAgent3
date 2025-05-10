@@ -86,4 +86,48 @@ class Course_model extends CI_Model
         $this->db->where('working', 1);
         return $this->db->get('gateways')->result_array();
     }
+
+    function buyCourseRequest($data) {
+        $this->db->insert('agentCourseBuyRequest', $data);
+    }
+
+
+    public function update_status_requests($agent_un_id, $course_un_id, $new_status, $quantity) {
+        // 1) fetch up to $quantity pending IDs
+        $pending = $this->db
+            ->select('id')
+            ->from('agentcourses')
+            ->where('agent_un_id',  $agent_un_id)
+            ->where('course_un_id', $course_un_id)
+            ->where('status',       1)
+            ->order_by('created_at','ASC')
+            ->limit($quantity)
+            ->get()
+            ->result_array();
+
+        if (empty($pending)) {
+            return 0;
+        }
+
+        $ids = array_column($pending, 'id');
+
+        // 2) update those IDs
+        $this->db
+            ->where_in('id', $ids)
+            ->update('agentcourses', [
+                'status'     => $new_status,
+                // 'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        return $this->db->affected_rows();
+    }
+
+
+    function getAgentDetailsByGateway($gatewayId) {
+        $this->db->where('un_id', $gatewayId);
+        $gatewayDetails = $this->db->get('agent_payment_gateway')->row_array();
+
+        $this->db->where('un_id', $gatewayDetails['agent_un_id']);
+        return $this->db->get('agent')->row_array();
+    }
 }

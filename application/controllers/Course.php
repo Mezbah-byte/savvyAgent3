@@ -228,6 +228,13 @@ class Course extends CI_Controller
         $form['updated_at'] = date('Y-m-d H:i:s');
         $this->Course_model->updateCourseOrder($id, $form);
 
+        $AgentDetails = $this->Course_model->getAgentDetailsByGateway($getCourseOrderDetails['gateway_id']);
+		$checking = $this->Course_model->update_status_requests($AgentDetails['un_id'], $getCourseOrderDetails['course_id'], 2, $quantity);
+        echo $AgentDetails['un_id'].'<br>';
+        echo $getCourseOrderDetails['course_id'].'<br>';
+        echo $checking.'<br>';
+        echo $quantity.'<br>';
+        echo json_encode($checking);
 
         $referedBy = $uData['un_id'];
         $a = 0;
@@ -370,7 +377,7 @@ class Course extends CI_Controller
         }
 
         $this->session->set_flashdata('success', 'Accepted successfully!');
-        redirect(base_url() . 'orderList/0');
+         redirect(base_url() . 'orderList/0');
     }
 
     function cancelCoursePayment($id)
@@ -407,30 +414,106 @@ class Course extends CI_Controller
     }
 
 
-    function buyCourse($courseId)
+    public function buyCourse($courseId)
     {
-        $courseDetsild = $this->Course_model->getCourseDetails($courseId);
-        $this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric');
-        if ($this->form_validation->run() == FALSE) {
-            $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
-            $data['courseDetails'] = $courseDetsild;
-            $data['gatewayList'] = $this->Course_model->getPaymentGateway();
-            // echo json_encode($data);
-            $this->load->view('dashboard/buy_course', $data);
-        } else {
-            $form = array();
-            $form['user_un_id'] = $this->userUnId;
-            $form['course_id'] = $courseId;
-            $form['quantity'] = $this->input->post('quantity');
-            $form['gateway_id'] = $this->input->post('gateway_id');
-            $form['trx'] = $this->input->post('trx');
-            $form['ssLink'] = $this->input->post('ssLink');
-            $form['status'] = 0;
-            $form['created_at'] = date('Y-m-d H:i:s');
-            $form['updated_at'] = date('Y-m-d H:i:s');
-            $this->Course_model->buyCourse($form);
-            $this->session->set_flashdata('success', 'Course bought successfully!');
-            redirect(base_url() . 'courseList');
+        $courseDetails = $this->Course_model->getCourseDetails($courseId);
+        $agentData     = $this->Basic_model->agentDetails($this->userUnId);
+        $gatewayList   = $this->Course_model->getPaymentGateway();
+
+        // 1) Validation
+        $this->form_validation->set_rules('quantity',   'Quantity',        'required|integer|greater_than_equal_to[20]');
+        $this->form_validation->set_rules('gateway_id', 'Payment Gateway','required|integer');
+        $this->form_validation->set_rules('trx',        'Transaction ID',  'required|trim');
+
+        if ($this->form_validation->run() === FALSE) {
+            return $this->load->view('dashboard/buy_course', compact('courseDetails','agentData','gatewayList'));
         }
+
+        // 2) Gather inputs
+        $quantity  = (int) $this->input->post('quantity');
+        $gatewayId = (int) $this->input->post('gateway_id');
+        $trx       = $this->input->post('trx');
+
+        // 3) Handle screenshot upload → B2
+        $ssLink = null;
+        if (!empty($_FILES['ssLink']['name'])) {
+            // a) Stage locally
+            $cfg = [
+                'upload_path'   => './uploads/tmp/',
+                'allowed_types' => 'jpg|jpeg|png|gif',
+                'max_size'      => 2048,
+                'file_name'     => uniqid('pay_'),
+            ];
+            $this->load->library('upload', $cfg);
+
+            if ($this->upload->do_upload('ssLink')) {
+                $ud         = $this->upload->data();
+                $tmpPath    = $ud['full_path'];
+                $mimeType   = $ud['file_type'];
+                $remoteName = 'payments/' . $ud['file_name'];
+
+                // b) Push to B2
+                $this->load->library('b2');
+                try {
+                    /** @var \BackblazeB2\Models\UploadFile $file */
+                    $file = $this->b2->uploadFile($tmpPath, $remoteName, $mimeType);
+    
+                    // c) Build the URL (bucket must be public)
+                    // We don’t need to check $file as an array—if no exception, upload succeeded
+                    $ssLink = $this->b2->getFileUrl($remoteName);
+                } catch (\Exception $e) {
+                    // you could log $e->getMessage() here for debugging
+                }
+
+                // d) Cleanup
+                @unlink($tmpPath);
+            }
+        }
+
+        $ssLink = str_replace('\\/', '/', $ssLink);
+
+
+        // 4) Calculate commission & totals
+        $map = $courseDetails['type'] === 'premium'
+            ? ['onlineAgent'=>100,'officeSupport'=>100,'paymentGateway'=>100]
+            : ['onlineAgent'=>20, 'officeSupport'=>20, 'paymentGateway'=>20];
+
+        preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
+        $types = $m[1] ?? [];
+        $commissionPerUnit = 0;
+        foreach ($types as $t) {
+            if (isset($map[$t])) {
+                $commissionPerUnit += $map[$t];
+            }
+        }
+
+        $price            = floatval($courseDetails['price']);
+        $bagTotal         = $price * $quantity;
+        $commissionAmount = $commissionPerUnit * $quantity;
+        $finalAmount      = $bagTotal - $commissionAmount;
+
+        // 5) Save order
+        $order = [
+            'agent_un_id'           => $this->userUnId,
+            'course_un_id'            => $courseId,
+            'quantity'             => $quantity,
+            'price_per_unit'       => $price,
+            'commission_per_unit'  => $commissionPerUnit,
+            'commission_amount'    => $commissionAmount,
+            'total_amount'         => $finalAmount,
+            'gateway_id'           => $gatewayId,
+            'trx'                  => $trx,
+            'ssLink'               => $ssLink,
+            'status'               => 0,
+            'created_at'           => date('Y-m-d H:i:s'),
+            'updated_at'           => date('Y-m-d H:i:s')
+        ];
+
+        // echo json_encode($order); // Debugging line, remove in production
+
+        $this->Course_model->buyCourseRequest($order);
+        $this->session->set_flashdata('success', 'Course bought successfully!');
+        redirect(base_url('courses'));
     }
+
 }

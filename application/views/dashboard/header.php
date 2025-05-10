@@ -14,11 +14,12 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>Dashboard - Logistics | Savvy</title>
+  <title>Savvy Agent</title>
 
 
-  <meta name="description" content="Start your development with a Dashboard for Bootstrap 5" />
-  <meta name="keywords" content="dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5">
+  <meta name="description" content="Savvy Agent – your all-in-one dashboard for managing agents, courses, and requests effortlessly." />
+  <meta name="keywords" content="savvy agent, agent dashboard, course requests, agent management, CodeIgniter, PHP, admin panel" />
+
   <!-- Canonical SEO -->
   <link rel="canonical" href="https://1.envato.market/frest_admin">
 
@@ -36,7 +37,7 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon"
-    href="https://demos.pixinvent.com/frest-html-admin-template/assets/img/favicon/favicon.ico" />
+    href="<?= base_url('assets/sa_logo.png')?>" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com/">

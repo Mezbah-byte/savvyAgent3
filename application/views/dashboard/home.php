@@ -190,7 +190,7 @@
       </div> -->
 
 
-      <div class="col-lg-6 col-xxl-6 mb-4 order-3 order-xxl-1">
+      <!-- <div class="col-lg-6 col-xxl-6 mb-4 order-3 order-xxl-1">
         <div class="card h-100">
           <div class="card-header d-flex align-items-center justify-content-between">
             <div class="card-title mb-0">
@@ -220,7 +220,7 @@
             <div id="shipmentStatisticsChart"></div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!--/ Shipment statistics -->
       <!-- Delivery Performance -->
       <div class="col-lg-6 col-xxl-4 mb-4 order-2 order-xxl-2">
