@@ -13,8 +13,8 @@
   <title>Login | Savvy Agent</title>
 
 
-  <meta name="description" content="Start your development with a Dashboard for Bootstrap 5" />
-  <meta name="keywords" content="dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5">
+  <meta name="description" content="Savvy Agent – your all-in-one dashboard for managing agents, courses, and requests effortlessly." />
+  <meta name="keywords" content="savvy agent, agent dashboard, course requests, agent management" />
   <!-- Canonical SEO -->
   <link rel="canonical" href="https://1.envato.market/frest_admin">
 
@@ -97,7 +97,7 @@
                 <span class="app-brand-logo demo">
                 <img 
         src="<?= base_url('assets/sa_logo.png') ?>" 
-        alt="Frest Logo" 
+        alt="SA Logo" 
         style="width:26px; height:26px;"
       />
 
@@ -207,8 +207,6 @@
 
 </body>
 
-
-<!-- Mirrored from demos.pixinvent.com/frest-html-admin-template/html/vertical-menu-template/auth-login-basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 03 Oct 2024 17:17:26 GMT -->
 
 </html>
 

@@ -18,7 +18,7 @@
 
 
   <meta name="description" content="Savvy Agent – your all-in-one dashboard for managing agents, courses, and requests effortlessly." />
-  <meta name="keywords" content="savvy agent, agent dashboard, course requests, agent management, CodeIgniter, PHP, admin panel" />
+  <meta name="keywords" content="savvy agent, agent dashboard, course requests, agent management" />
 
   <!-- Canonical SEO -->
   <link rel="canonical" href="https://1.envato.market/frest_admin">
