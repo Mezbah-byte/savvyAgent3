@@ -1,6 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$autoload = FCPATH . 'vendor/autoload.php';
+if (! file_exists($autoload)) {
+    // maybe vendor sits one level up?
+    $autoload = FCPATH . '../vendor/autoload.php';
+}
+if (! file_exists($autoload)) {
+    die("ERROR: Cannot find autoload.php at $autoload");
+}
+require_once $autoload;
+
 use BackblazeB2\Client;
 
 class B2 {
