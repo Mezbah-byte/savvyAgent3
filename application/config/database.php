@@ -75,18 +75,23 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn' => '',
-	'hostname' => 'localhost',
+	// 'hostname' => 'localhost',
 
 
-	'username' => 'mysavvyb_main',
-	'password' => '5!.iR6WlzwU3R9',
-	// 'database' => 'mysavvyb_dev_ecom',
-	'database' => 'mysavvyb_ecom',
+	// 'username' => 'mysavvyb_main',
+	// 'password' => '5!.iR6WlzwU3R9',
+	// // 'database' => 'mysavvyb_dev_ecom',
+	// 'database' => 'mysavvyb_ecom',
 
 
 	// 'username' => 'root',
 	// 'password' => '',
 	// 'database' => 'ecom',
+
+	'hostname' => '115.187.18.36',
+	'username' => 'ieltsasp_savvy',
+	'password' => 'ieltsasp_savvy',
+	'database' => 'ieltsasp_savvy',
 	
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
