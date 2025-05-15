@@ -249,37 +249,42 @@ class Course extends CI_Controller
                     if ($a == 0) {
                         // $bonus = $courseDetails['type'] == "premium"? 500:$courseDetails['type'] == "regularMember"?200:0;
                         $bonus = $courseDetails['type'] == "premium" ? 500 : ($courseDetails['type'] == "regularMember" ? 200 : 0);
-
-                        // if($courseDetails['type'] == "premium"){
-                        //     if($userDetails['current_post_id'] > 19){
-                        //         $ibonus = 500*$quantity;
-                        //     } else{
-                        //         $ibonus = 200*$quantity;
-                        //     }
-                        // } else{
-                        //     $ibonus = 0;
-                        // }
-
                         $ibonus = 0;
+
+                        if($courseDetails['type'] == "premium"){
+                            if($userDetails['current_post_id'] < 11){
+                                $ibonus = 200*$quantity;
+                            } else if($userDetails['current_post_id'] == 20){
+                                $ibonus = 300*$quantity;
+                            } else if($userDetails['current_post_id'] == 30){
+                                $ibonus = 400*$quantity;
+                            } else if($userDetails['current_post_id'] > 30){
+                                $ibonus = 500*$quantity;
+                            }  else{
+                                $ibonus = 0*$quantity;
+                            }
+                        } else{
+                            $ibonus = 0;
+                        }
 
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity) + $ibonus;
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity) + $ibonus;
                         $this->Basic_model->updateCustomer($userDetails['un_id'], $form);
 
-                        // if($courseDetails['type'] == "premium"){
-                        //     $bincome = array();
-                        //     $bincome['from_user'] = $customerDetails['un_id'];
-                        //     $bincome['to_user'] = $userDetails['un_id'];
-                        //     $bincome['amount'] = $ibonus;
-                        //     $bincome['package_id'] = $getCourseOrderDetails['course_id'];
-                        //     $bincome['generation'] = $a;
-                        //     $bincome['source'] = 'bonus_income';
-                        //     $bincome['created_at'] = date('Y-m-d H:i:s');
-                        //     $bincome['title'] = 'Eid Bonus';
-                        //     $bincome['details'] = 'Eid Bonus from My Savvy BD';
-                        //     $this->Basic_model->create_bonus_income($bincome);
-                        // }
+                        if($courseDetails['type'] == "premium"){
+                            $bincome = array();
+                            $bincome['from_user'] = $customerDetails['un_id'];
+                            $bincome['to_user'] = $userDetails['un_id'];
+                            $bincome['amount'] = $ibonus;
+                            $bincome['package_id'] = $getCourseOrderDetails['course_id'];
+                            $bincome['generation'] = $a;
+                            $bincome['source'] = 'bonus_income';
+                            $bincome['created_at'] = date('Y-m-d H:i:s');
+                            $bincome['title'] = 'Eid Bonus';
+                            $bincome['details'] = 'Eid Bonus from My Savvy BD';
+                            $this->Basic_model->create_bonus_income($bincome);
+                        }
                     } else if ($a == 1) {
                         // if ($userDetails['current_post_id'] > 9) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 20 : 0);
