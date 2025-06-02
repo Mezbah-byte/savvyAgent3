@@ -480,8 +480,10 @@ class Course extends CI_Controller
 
         // 4) Calculate commission & totals
         $map = $courseDetails['type'] === 'premium'
-            ? ['onlineAgent'=>100,'officeSupport'=>100,'paymentGateway'=>100]
-            : ['onlineAgent'=>20, 'officeSupport'=>20, 'paymentGateway'=>20];
+            ? ['onlineAgent'=>100,'officeSupport'=>100]
+            : ['onlineAgent'=>20, 'officeSupport'=>20];
+            // ? ['onlineAgent'=>100,'officeSupport'=>100,'paymentGateway'=>100]
+            // : ['onlineAgent'=>20, 'officeSupport'=>20, 'paymentGateway'=>20];
 
         preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
         $types = $m[1] ?? [];
