@@ -9,8 +9,8 @@ $minQty         = 20;
 
 // Flat discount per unit by type
 $map = $courseDetails['type'] === 'premium'
-    ? ['onlineAgent'=>100,'officeSupport'=>100,'paymentGateway'=>100]
-    : ['onlineAgent'=>20,'officeSupport'=>20,'paymentGateway'=>20];
+    ? ['onlineAgent'=>100,'officeSupport'=>100]
+    : ['onlineAgent'=>20,'officeSupport'=>20];
 
 // Parse commission JSON (e.g. {"onlineAgent","officeSupport"})
 $commissionPerUnit = 0;
