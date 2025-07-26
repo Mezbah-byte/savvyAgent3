@@ -86,7 +86,7 @@ $db['default'] = array(
 
 	// 'username' => 'root',
 	// 'password' => '',
-	// 'database' => 'ecom',
+	// 'database' => 'ecom',  
 
 	'hostname' => '115.187.18.36',
 	'username' => 'ieltsasp_savvy',
