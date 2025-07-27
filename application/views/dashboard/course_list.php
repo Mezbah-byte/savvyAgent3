@@ -2,25 +2,19 @@
 
 <?php include('topbar.php') ?>
 
-
-
-
-
-
-
-
-
-
 <div class="content-wrapper">
 
   <!-- Content -->
-
   <div class="container-xxl flex-grow-1 container-p-y">
-
 
     <!-- Hoverable Table rows -->
     <div class="card">
-      <h5 class="card-header">Course List</h5>
+      <h5 class="card-header d-flex justify-content-between align-items-center">
+  Course List
+  <a href="<?php echo base_url('buyCourses'); ?>" class="btn btn-sm btn-success">
+    <i class="bx bx-cart me-1"></i> Buy Courses
+  </a>
+</h5>
       <div class="table-responsive text-nowrap">
         <table class="table table-hover">
           <thead>
@@ -28,31 +22,25 @@
               <th>Product</th>
               <th>Main Price</th>
               <th>Offer Price</th>
-              <!-- <th>Unit</th> -->
-              <th>Actions</th>
+              <!-- <th>Actions</th> -->
             </tr>
           </thead>
           <tbody class="table-border-bottom-0">
 
             <?php foreach ($courses as $course) { ?>
               <tr>
-                <td><img src="<?php echo $course['img_path'] . $course['img']; ?>" height="50px" width="50px" /> <span
-                    class="fw-medium"><?php echo $course['title'] ?></span></td>
+                <td>
+                  <img src="<?php echo $course['img_path'] . $course['img']; ?>" height="50" width="50" />
+                  <span class="fw-medium"><?php echo $course['title'] ?></span>
+                </td>
                 <td><?php echo $course['full_price'] . ' ৳'; ?></td>
                 <td><?php echo $course['price'] . ' ৳'; ?></td>
-                <!-- <td><?php echo $course['stock']; ?></td> -->
-                <td>
-                  <div class="dropdown">
-                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
-                        class="bx bx-dots-vertical-rounded"></i></button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="<?php echo base_url() . 'buyCourse/' . $course['un_id'] ?>"><i
-                          class="bx bx-edit-alt me-1"></i> Buy Course</a>
-                      <!-- <a class="dropdown-item" href="<?php echo base_url() . 'cancelOrder/' . $course['id'] ?>"><i
-                          class="bx bx-trash me-1"></i> Cancel</a> -->
-                    </div>
-                  </div>
-                </td>
+                <!-- <td>
+                  <a href="<?php echo base_url('buyCourse/' . $course['un_id']); ?>"
+                     class="btn btn-sm btn-success">
+                    <i class="bx bx-cart me-1"></i> Buy Course
+                  </a>
+                </td> -->
               </tr>
             <?php } ?>
 
@@ -62,31 +50,7 @@
     </div>
     <!--/ Hoverable Table rows -->
 
-
-
   </div>
   <!-- / Content -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   <?php include('footer.php') ?>
