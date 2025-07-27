@@ -1,20 +1,24 @@
 <?php include('header.php'); ?>
 <?php include('topbar.php'); ?>
 <?php include('flashdata.php'); ?>
+
 <?php
 // Pricing & Commission Setup
 $unitPrice      = floatval($courseDetails['price']);
 $deliveryCharge = 0;
 $minQty         = 20;
 
-// Flat discount per unit by type
-$map = $courseDetails['type'] === 'premium'
-    ? ['onlineAgent'=>100,'officeSupport'=>100]
-    : ['onlineAgent'=>20,'officeSupport'=>20];
+// Commission rates from course JSON (agentComission column)
+$allRates = json_decode($courseDetails['agentComission'], true);
+// শুধুমাত্র onlineAgent ও officeSupport
+$map = [
+    'onlineAgent'   => isset($allRates['onlineAgent']) ? floatval($allRates['onlineAgent']) : 0,
+    'officeSupport' => isset($allRates['officeSupport']) ? floatval($allRates['officeSupport']) : 0,
+];
 
-// Parse commission JSON (e.g. {"onlineAgent","officeSupport"})
+// Parse which commission-types agent-এর আছে
 $commissionPerUnit = 0;
-$hasCommission = false;
+$hasCommission     = false;
 preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
 $types = $m[1] ?? [];
 foreach ($types as $t) {
@@ -31,6 +35,7 @@ $commissionAmount = $commissionPerUnit * $initialQty;
 $orderTotal       = $bagTotal - $commissionAmount;
 $totalPay         = $orderTotal + $deliveryCharge;
 ?>
+
 
 <div class="content-wrapper">
   <div class="container-xxl flex-grow-1 container-p-y">
