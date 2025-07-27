@@ -84,15 +84,15 @@ $db['default'] = array(
 	// 'database' => 'mysavvyb_ecom',
 
 
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'savvy',  
+	// 'hostname' => 'localhost',
+	// 'username' => 'root',
+	// 'password' => '',
+	// 'database' => 'savvy',  
 
-	// 'hostname' => '115.187.18.36',
-	// 'username' => 'ieltsasp_savvy',
-	// 'password' => 'ieltsasp_savvy',
-	// 'database' => 'ieltsasp_savvy',
+	'hostname' => '115.187.18.36',
+	'username' => 'ieltsasp_savvy',
+	'password' => 'ieltsasp_savvy',
+	'database' => 'ieltsasp_savvy',
 	
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
