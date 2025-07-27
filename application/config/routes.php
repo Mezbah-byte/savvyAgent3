@@ -70,6 +70,7 @@ $route['orderList/(:any)'] = 'course/orderList/$1';
 $route['acceptOrder/(:any)'] = 'course/acceptCoursePayment/$1';
 $route['cancelOrder/(:any)'] = 'course/cancelCoursePayment/$1';
 $route['buyCourse/(:any)'] = 'course/buyCourse/$1';
+$route['buyCourses'] = 'course/buyCourses';
 
 $route['myGateways/(:any)'] = 'home/myGateways/$1';
 $route['changeGatewayStatus/(:any)/(:any)'] = 'home/changeGatewayStatus/$1/$2';

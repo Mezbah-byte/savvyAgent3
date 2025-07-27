@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn' => '',
-	// 'hostname' => 'localhost',
+	
 
 
 	// 'username' => 'mysavvyb_main',
@@ -84,9 +84,10 @@ $db['default'] = array(
 	// 'database' => 'mysavvyb_ecom',
 
 
+	// 'hostname' => 'localhost',
 	// 'username' => 'root',
 	// 'password' => '',
-	// 'database' => 'ecom',  
+	// 'database' => 'savvy',  
 
 	'hostname' => '115.187.18.36',
 	'username' => 'ieltsasp_savvy',

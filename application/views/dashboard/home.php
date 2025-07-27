@@ -28,6 +28,32 @@
               <div class="avatar me-2">
                 <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-truck"></i></span>
               </div>
+              <h4 class="ms-1 mb-0"><?php echo $agentData['current_balance']; ?></h4>
+            </div>
+            <p class="mb-1">Current Balance</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="card card-border-shadow-primary h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2 pb-1">
+              <div class="avatar me-2">
+                <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-truck"></i></span>
+              </div>
+              <h4 class="ms-1 mb-0"><?php echo $agentData['total_income']; ?></h4>
+            </div>
+            <p class="mb-1">Total Income</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="card card-border-shadow-primary h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2 pb-1">
+              <div class="avatar me-2">
+                <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-truck"></i></span>
+              </div>
               <h4 class="ms-1 mb-0"><?php echo count($pendingOrderList); ?></h4>
             </div>
             <p class="mb-1">Pending Orders</p>

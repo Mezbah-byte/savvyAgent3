@@ -3,20 +3,20 @@
 <?php include('flashdata.php'); ?>
 
 <?php
-// Pricing & Commission Setup
+
 $unitPrice      = floatval($courseDetails['price']);
 $deliveryCharge = 0;
-$minQty         = 20;
+$minQty         = 1;
 
-// Commission rates from course JSON (agentComission column)
+
 $allRates = json_decode($courseDetails['agentComission'], true);
-// শুধুমাত্র onlineAgent ও officeSupport
+
 $map = [
     'onlineAgent'   => isset($allRates['onlineAgent']) ? floatval($allRates['onlineAgent']) : 0,
     'officeSupport' => isset($allRates['officeSupport']) ? floatval($allRates['officeSupport']) : 0,
 ];
 
-// Parse which commission-types agent-এর আছে
+
 $commissionPerUnit = 0;
 $hasCommission     = false;
 preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
@@ -28,7 +28,7 @@ foreach ($types as $t) {
     }
 }
 
-// Initial totals
+
 $initialQty       = $minQty;
 $bagTotal         = $unitPrice * $initialQty;
 $commissionAmount = $commissionPerUnit * $initialQty;
@@ -41,7 +41,6 @@ $totalPay         = $orderTotal + $deliveryCharge;
   <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="py-3 mb-4"><span class="text-muted fw-light">Checkout /</span> <?= htmlspecialchars($courseDetails['title']); ?></h4>
 
-    <!-- Commission Info -->
     <?php if ($hasCommission): ?>
       <div class="alert alert-success">Flat discount: ৳<?= number_format($commissionPerUnit,2); ?> per unit.</div>
     <?php else: ?>

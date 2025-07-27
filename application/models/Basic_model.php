@@ -142,4 +142,10 @@ class Basic_model extends CI_Model
         $this->db->insert('bonus_income', $form);
     }
 
+    function updateAgent($un_id, $form)
+    {
+        $this->db->where('un_id', $un_id);
+        $this->db->update('agent', $form);
+    }
+
 }
