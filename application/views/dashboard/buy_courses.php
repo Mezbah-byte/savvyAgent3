@@ -195,8 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalTotal = Math.max(0, totalAmt - balanceUse);
     finalEl.textContent = finalTotal.toFixed(2) + ' ৳';
 
-    // Button enable logic: Qty>=20 and FinalTotal>0
-    proceed.disabled = totalQty < 20 || finalTotal <= 0;
+    // Button enable logic: Qty>=10 and FinalTotal>0
+    proceed.disabled = totalQty < 10 || finalTotal <= 0;
   }
 
   // course-checkbox handling (same যেমন before)
