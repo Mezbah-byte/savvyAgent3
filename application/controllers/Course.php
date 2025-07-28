@@ -289,6 +289,9 @@ class Course extends CI_Controller
                     } else if ($a == 1) {
                         // if ($userDetails['current_post_id'] > 9) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -297,6 +300,9 @@ class Course extends CI_Controller
                     } else if ($a == 2) {
                         // if ($userDetails['current_post_id'] > 9) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -305,6 +311,9 @@ class Course extends CI_Controller
                     } else if ($a == 3) {
                         // if ($userDetails['current_post_id'] > 19) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -313,6 +322,9 @@ class Course extends CI_Controller
                     } else if ($a == 4) {
                         // if ($userDetails['current_post_id'] > 19) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -321,6 +333,9 @@ class Course extends CI_Controller
                     } else if ($a == 5) {
                         // if ($userDetails['current_post_id'] > 29) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -329,6 +344,9 @@ class Course extends CI_Controller
                     } else if ($a == 6) {
                         // if ($userDetails['current_post_id'] > 29) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -337,6 +355,9 @@ class Course extends CI_Controller
                     } else if ($a == 7) {
                         // if ($userDetails['current_post_id'] > 39) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -345,6 +366,9 @@ class Course extends CI_Controller
                     } else if ($a == 8) {
                         // if ($userDetails['current_post_id'] > 49) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -353,6 +377,9 @@ class Course extends CI_Controller
                     } else if ($a == 9) {
                         // if ($userDetails['current_post_id'] > 49) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -361,6 +388,9 @@ class Course extends CI_Controller
                     } else if ($a == 10) {
                         // if ($userDetails['current_post_id'] > 59) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -369,6 +399,9 @@ class Course extends CI_Controller
                     } else if($a == 11) {
                         // if ($userDetails['current_post_id'] > 69) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -377,6 +410,9 @@ class Course extends CI_Controller
                     } else if($a == 12) {
                         // if ($userDetails['current_post_id'] > 79) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -385,6 +421,9 @@ class Course extends CI_Controller
                     } else if($a == 13) {
                         // if ($userDetails['current_post_id'] > 89) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -393,6 +432,9 @@ class Course extends CI_Controller
                     } else if($a == 14) {
                         // if ($userDetails['current_post_id'] > 99) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -401,6 +443,9 @@ class Course extends CI_Controller
                     } else if($a == 15) {
                         // if ($userDetails['current_post_id'] > 109) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -409,6 +454,9 @@ class Course extends CI_Controller
                     } else if($a == 16) {
                         // if ($userDetails['current_post_id'] > 119) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -417,6 +465,9 @@ class Course extends CI_Controller
                     } else if($a == 17) {
                         // if ($userDetails['current_post_id'] > 129) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -425,6 +476,9 @@ class Course extends CI_Controller
                     } else if($a == 18) {
                         // if ($userDetails['current_post_id'] > 139) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
@@ -433,6 +487,9 @@ class Course extends CI_Controller
                     } else if($a == 19) {
                         // if ($userDetails['current_post_id'] > 149) {
                         $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        if($userDetails['type'] != "premium"){
+                            $bonus = 0;
+                        }
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity);
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity);
