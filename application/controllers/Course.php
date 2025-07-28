@@ -701,8 +701,8 @@ class Course extends CI_Controller
                 foreach ($selected as $cid) {
                     $totalQty += isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
                 }
-                if ($totalQty < 20) {
-                    $errors[] = 'Total quantity must be at least 20.';
+                if ($totalQty < 10) {
+                    $errors[] = 'Total quantity must be at least 10.';
                 }
                 if (empty($gatewayId)) {
                     $errors[] = 'Please choose a payment gateway.';
@@ -725,7 +725,7 @@ class Course extends CI_Controller
                 $cfg = [
                     'upload_path'   => './uploads/tmp/',
                     'allowed_types' => 'jpg|jpeg|png|gif',
-                    'max_size'      => 2048,
+                    'max_size'      => 4069,
                     'file_name'     => uniqid('pay_'),
                 ];
                 $this->load->library('upload', $cfg);
