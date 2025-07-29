@@ -272,7 +272,7 @@ class Course extends CI_Controller
                         $form['current_balance'] = $userDetails['current_balance'] + ($bonus * $quantity) + $ibonus;
                         $this->Basic_model->updateCustomer($userDetails['un_id'], $form);
 
-                        if($courseDetails['type'] == "premium"){
+                        // if($courseDetails['type'] == "premium"){
                             $bincome = array();
                             $bincome['from_user'] = $customerDetails['un_id'];
                             $bincome['to_user'] = $userDetails['un_id'];
@@ -284,7 +284,7 @@ class Course extends CI_Controller
                             $bincome['title'] = 'Anniversary Bonus';
                             $bincome['details'] = '1st Anniversary bonus from My Savvy BD';
                             $this->Basic_model->create_bonus_income($bincome);
-                        }
+                        // }
                     } else if ($a == 1) {
                         // if ($userDetails['current_post_id'] > 9) {
                         $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
