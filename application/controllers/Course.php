@@ -249,7 +249,7 @@ class Course extends CI_Controller
                     if ($a == 0) {
                         // $bonus = $courseDetails['type'] == "premium"? 500:$courseDetails['type'] == "regularMember"?200:0;
                         $bonus = $courseDetails['type'] == "premium" ? $courseDetails['refer_comission'] : ($courseDetails['type'] == "regularMember" ? $courseDetails['refer_comission'] : 0);
-                        $ibonus = 500;
+                        $ibonus = 500*$quantity;
 
                         // if($courseDetails['type'] == "premium"){
                         //     if($userDetails['current_post_id'] < 11){
