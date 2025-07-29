@@ -230,16 +230,16 @@ class Course extends CI_Controller
 
         $AgentDetails = $this->Course_model->getAgentDetailsByGateway($getCourseOrderDetails['gateway_id']);
 		$checking = $this->Course_model->update_status_requests($AgentDetails['un_id'], $getCourseOrderDetails['course_id'], 2, $quantity);
-        echo $AgentDetails['un_id'].'<br>';
-        echo $getCourseOrderDetails['course_id'].'<br>';
-        echo $checking.'<br>';
-        echo $quantity.'<br>';
+        echo "Agent ID: ".$AgentDetails['un_id'].'<br>';
+        echo "Course ID: ".$getCourseOrderDetails['course_id'].'<br>';
+        echo "Checking: ".$checking.'<br>';
+        echo "Quantity: ".$quantity.'<br>';
         echo json_encode($checking);
 
         $referedBy = $uData['un_id'];
         $a = 0;
 
-        while ($a < 10) {
+        while ($a < 20) {
             $userDetails = $this->Basic_model->getUserDetails($referedBy);
             $bonus = 0;
             if ($userDetails == null) {
@@ -520,7 +520,7 @@ class Course extends CI_Controller
         }
 
         $this->session->set_flashdata('success', 'Accepted successfully!');
-         redirect(base_url() . 'orderList/0');
+        redirect(base_url() . 'orderList/0');
     }
 
     function cancelCoursePayment($id)
