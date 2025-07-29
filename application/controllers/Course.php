@@ -249,24 +249,23 @@ class Course extends CI_Controller
                     if ($a == 0) {
                         // $bonus = $courseDetails['type'] == "premium"? 500:$courseDetails['type'] == "regularMember"?200:0;
                         $bonus = $courseDetails['type'] == "premium" ? $courseDetails['refer_comission'] : ($courseDetails['type'] == "regularMember" ? $courseDetails['refer_comission'] : 0);
-                        $ibonus = 0;
+                        $ibonus = 500;
 
-                        if($courseDetails['type'] == "premium"){
-                            // if($userDetails['current_post_id'] < 11){
-                            //     $ibonus = 200*$quantity;
-                            // } else if($userDetails['current_post_id'] == 20){
-                            //     $ibonus = 300*$quantity;
-                            // } else if($userDetails['current_post_id'] == 30){
-                            //     $ibonus = 400*$quantity;
-                            // } else if($userDetails['current_post_id'] > 30){
-                            //     $ibonus = 500*$quantity;
-                            // }  else{
-                            //     $ibonus = 0*$quantity;
-                            // }
-                            $ibonus = 500*$quantity;
-                        } else{
-                            $ibonus = 0;
-                        }
+                        // if($courseDetails['type'] == "premium"){
+                        //     if($userDetails['current_post_id'] < 11){
+                        //         $ibonus = 200*$quantity;
+                        //     } else if($userDetails['current_post_id'] == 20){
+                        //         $ibonus = 300*$quantity;
+                        //     } else if($userDetails['current_post_id'] == 30){
+                        //         $ibonus = 400*$quantity;
+                        //     } else if($userDetails['current_post_id'] > 30){
+                        //         $ibonus = 500*$quantity;
+                        //     }  else{
+                        //         $ibonus = 0*$quantity;
+                        //     }
+                        // } else{
+                        //     $ibonus = 0;
+                        // }
 
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity) + $ibonus;
