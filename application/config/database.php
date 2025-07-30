@@ -89,10 +89,15 @@ $db['default'] = array(
 	// 'password' => '',
 	// 'database' => 'savvy',  
 
+	// 'hostname' => '115.187.18.36',
+	// 'username' => 'ieltsasp_savvy',
+	// 'password' => 'ieltsasp_savvy',
+	// 'database' => 'ieltsasp_savvy',
+
 	'hostname' => '115.187.18.36',
 	'username' => 'ieltsasp_savvy',
 	'password' => 'ieltsasp_savvy',
-	'database' => 'ieltsasp_savvy',
+	'database' => 'ieltsasp_savvy_dev',
 	
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
