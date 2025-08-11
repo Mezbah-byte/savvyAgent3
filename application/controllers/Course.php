@@ -870,7 +870,7 @@ class Course extends CI_Controller
     $trx       = $this->input->post('trx');
 
     // 3) Skip screenshot upload
-    $ssLink = null;
+    $ssLink = "";
 
     // 4) Calculate commission & totals
     $map = $courseDetails['type'] === 'premium'
@@ -957,7 +957,7 @@ public function buyCourses()
         }
 
         // 4) Skip screenshot upload
-        $ssLink = null;
+        $ssLink = "";
 
         // 5) If errors, reload view
         if ($errors) {
