@@ -869,23 +869,8 @@ class Course extends CI_Controller
     $gatewayId = (int) $this->input->post('gateway_id');
     $trx       = $this->input->post('trx');
 
-    // 3) Handle screenshot upload → Local hosting
+    // 3) Skip screenshot upload
     $ssLink = null;
-    if (!empty($_FILES['ssLink']['name'])) {
-        $cfg = [
-            'upload_path'   => './uploads/payments/', // final folder
-            'allowed_types' => 'jpg|jpeg|png|gif',
-            'max_size'      => 2048,
-            'file_name'     => uniqid('pay_'),
-        ];
-        $this->load->library('upload', $cfg);
-
-        if ($this->upload->do_upload('ssLink')) {
-            $ud = $this->upload->data();
-            $ssLink = base_url('uploads/payments/' . $ud['file_name']);
-        }
-    }
-    $ssLink = str_replace('\\/', '/', $ssLink);
 
     // 4) Calculate commission & totals
     $map = $courseDetails['type'] === 'premium'
@@ -928,7 +913,6 @@ class Course extends CI_Controller
     redirect(base_url('courses'));
 }
 
-
 public function buyCourses()
 {
     // Load for both GET and POST
@@ -967,31 +951,13 @@ public function buyCourses()
             if (empty($trx)) {
                 $errors[] = 'Transaction ID is required.';
             }
-            if (empty($_FILES['ssLink']['name'])) {
-                $errors[] = 'Payment screenshot is required.';
-            }
             if ($useBalance && $balanceAmt > $agentData['current_balance']) {
                 $errors[] = 'Cannot use more than your current balance.';
             }
         }
 
-        // 4) Screenshot upload → Local hosting
+        // 4) Skip screenshot upload
         $ssLink = null;
-        if (empty($errors) && ! empty($_FILES['ssLink']['name'])) {
-            $cfg = [
-                'upload_path'   => './uploads/payments/',
-                'allowed_types' => 'jpg|jpeg|png|gif',
-                'max_size'      => 4069,
-                'file_name'     => uniqid('pay_'),
-            ];
-            $this->load->library('upload', $cfg);
-            if ($this->upload->do_upload('ssLink')) {
-                $ud      = $this->upload->data();
-                $ssLink = base_url('uploads/payments/' . $ud['file_name']);
-            } else {
-                $errors[] = $this->upload->display_errors('', '');
-            }
-        }
 
         // 5) If errors, reload view
         if ($errors) {
@@ -999,7 +965,7 @@ public function buyCourses()
             return $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
         }
 
-        // 6) Compute grand total for prorating (optional)
+        // 6) Compute grand total for prorating
         $grandTotal = 0;
         foreach ($selected as $cid) {
             $course = $this->Course_model->getCourseDetails($cid);
@@ -1063,7 +1029,7 @@ public function buyCourses()
                 'total_amount'         => $net,
                 'gateway_id'           => $gatewayId,
                 'trx'                  => $trx,
-                'ssLink'               => str_replace('\\/','/',$ssLink),
+                'ssLink'               => $ssLink,
                 'status'               => 0,
                 'created_at'           => date('Y-m-d H:i:s'),
                 'updated_at'           => date('Y-m-d H:i:s'),
@@ -1089,6 +1055,7 @@ public function buyCourses()
     // GET
     $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
 }
+
 
 
 }
