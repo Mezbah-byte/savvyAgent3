@@ -556,505 +556,505 @@ class Course extends CI_Controller
     }
 
 
-    // public function buyCourse($courseId)
-    // {
-    //     $courseDetails = $this->Course_model->getCourseDetails($courseId);
-    //     $agentData     = $this->Basic_model->agentDetails($this->userUnId);
-    //     $gatewayList   = $this->Course_model->getPaymentGateway();
-    //     $items         = $this->Course_model->getActiveCourse();
-
-    //     // 1) Validation
-    //     $this->form_validation->set_rules('quantity',   'Quantity',        'required|integer|greater_than_equal_to[20]');
-    //     $this->form_validation->set_rules('gateway_id', 'Payment Gateway','required|integer');
-    //     $this->form_validation->set_rules('trx',        'Transaction ID',  'required|trim');
-
-    //     if ($this->form_validation->run() === FALSE) {
-    //         return $this->load->view('dashboard/buy_course', compact('courseDetails','agentData','gatewayList','items'));
-    //     }
-    //     // if ($this->form_validation->run() === FALSE) {
-    //     //     $data = [
-    //     //         'courseDetails' => $courseDetails,
-    //     //         'agentData'     => $agentData,
-    //     //         'gatewayList'   => $gatewayList,
-    //     //         'items'         => $items
-    //     //     ];
-    //     //     return $this->load->view('dashboard/buy_course', $data);
-    //     // }
-
-    //     // 2) Gather inputs
-    //     $quantity  = (int) $this->input->post('quantity');
-    //     $gatewayId = (int) $this->input->post('gateway_id');
-    //     $trx       = $this->input->post('trx');
-
-    //     // 3) Handle screenshot upload → B2
-    //     $ssLink = null;
-    //     if (!empty($_FILES['ssLink']['name'])) {
-    //         // a) Stage locally
-    //         $cfg = [
-    //             'upload_path'   => './uploads/tmp/',
-    //             'allowed_types' => 'jpg|jpeg|png|gif',
-    //             'max_size'      => 2048,
-    //             'file_name'     => uniqid('pay_'),
-    //         ];
-    //         $this->load->library('upload', $cfg);
-
-    //         if ($this->upload->do_upload('ssLink')) {
-    //             $ud         = $this->upload->data();
-    //             $tmpPath    = $ud['full_path'];
-    //             $mimeType   = $ud['file_type'];
-    //             $remoteName = 'payments/' . $ud['file_name'];
-
-    //             // b) Push to B2
-    //             $this->load->library('b2');
-    //             try {
-    //                 /** @var \BackblazeB2\Models\UploadFile $file */
-    //                 $file = $this->b2->uploadFile($tmpPath, $remoteName, $mimeType);
-    
-    //                 // c) Build the URL (bucket must be public)
-    //                 // We don’t need to check $file as an array—if no exception, upload succeeded
-    //                 $ssLink = $this->b2->getFileUrl($remoteName);
-    //             } catch (\Exception $e) {
-    //                 // you could log $e->getMessage() here for debugging
-    //             }
-
-    //             // d) Cleanup
-    //             @unlink($tmpPath);
-    //         }
-    //     }
-
-    //     $ssLink = str_replace('\\/', '/', $ssLink);
-
-
-    //     // 4) Calculate commission & totals
-    //     $map = $courseDetails['type'] === 'premium'
-    //         ? ['onlineAgent'=>100,'officeSupport'=>100]
-    //         : ['onlineAgent'=>20, 'officeSupport'=>20];
-    //         // ? ['onlineAgent'=>100,'officeSupport'=>100,'paymentGateway'=>100]
-    //         // : ['onlineAgent'=>20, 'officeSupport'=>20, 'paymentGateway'=>20];
-
-    //     preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
-    //     $types = $m[1] ?? [];
-    //     $commissionPerUnit = 0;
-    //     foreach ($types as $t) {
-    //         if (isset($map[$t])) {
-    //             $commissionPerUnit += $map[$t];
-    //         }
-    //     }
-
-    //     $price            = floatval($courseDetails['price']);
-    //     $bagTotal         = $price * $quantity;
-    //     $commissionAmount = $commissionPerUnit * $quantity;
-    //     $finalAmount      = $bagTotal - $commissionAmount;
-
-    //     // 5) Save order
-    //     $order = [
-    //         'agent_un_id'           => $this->userUnId,
-    //         'course_un_id'            => $courseId,
-    //         'quantity'             => $quantity,
-    //         'price_per_unit'       => $price,
-    //         'commission_per_unit'  => $commissionPerUnit,
-    //         'commission_amount'    => $commissionAmount,
-    //         'total_amount'         => $finalAmount,
-    //         'gateway_id'           => $gatewayId,
-    //         'trx'                  => $trx,
-    //         'ssLink'               => $ssLink,
-    //         'status'               => 0,
-    //         'created_at'           => date('Y-m-d H:i:s'),
-    //         'updated_at'           => date('Y-m-d H:i:s')
-    //     ];
-
-    //     // echo json_encode($order); // Debugging line, remove in production
-
-    //     $this->Course_model->buyCourseRequest($order);
-    //     $this->session->set_flashdata('success', 'Course bought successfully!');
-    //     redirect(base_url('courses'));
-    // }
-
-
-    //  public function buyCourses(){
-    //     // Load for both GET and POST
-    //     $courseList  = $this->Course_model->getActiveCourse();
-    //     $agentData   = $this->Basic_model->agentDetails($this->userUnId);
-    //     $gatewayList = $this->Course_model->getPaymentGateway();
-
-    //     if ($this->input->method() === 'post') {
-    //         // 1) Gather inputs
-    //         $selected     = $this->input->post('selected')   ?: [];
-    //         $quantities   = $this->input->post('quantity')   ?: [];
-    //         $gatewayId    = $this->input->post('gateway_id');
-    //         $trx          = $this->input->post('trx');
-
-    //         // 2) Agent‐balance feature
-    //         $useBalance = $this->input->post('useBalance') ? true : false;
-    //         $balanceAmt = $useBalance
-    //             ? $this->input->post('balance_amt')
-    //             : 0.0;
-
-    //         // 3) Validation
-    //         $errors = [];
-    //         if (empty($selected)) {
-    //             $errors[] = 'Please select at least one course.';
-    //         } else {
-    //             // total qty
-    //             $totalQty = 0;
-    //             foreach ($selected as $cid) {
-    //                 $totalQty += isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
-    //             }
-    //             if ($totalQty < 10) {
-    //                 $errors[] = 'Total quantity must be at least 10.';
-    //             }
-    //             if (empty($gatewayId)) {
-    //                 $errors[] = 'Please choose a payment gateway.';
-    //             }
-    //             if (empty($trx)) {
-    //                 $errors[] = 'Transaction ID is required.';
-    //             }
-    //             if (empty($_FILES['ssLink']['name'])) {
-    //                 $errors[] = 'Payment screenshot is required.';
-    //             }
-    //             // balance validation
-    //             if ($useBalance && $balanceAmt > $agentData['current_balance']) {
-    //                 $errors[] = 'Cannot use more than your current balance.';
-    //             }
-    //         }
-
-    //         // 4) Screenshot upload
-    //         $ssLink = null;
-    //         if (empty($errors) && ! empty($_FILES['ssLink']['name'])) {
-    //             $cfg = [
-    //                 'upload_path'   => './uploads/tmp/',
-    //                 'allowed_types' => 'jpg|jpeg|png|gif',
-    //                 'max_size'      => 4069,
-    //                 'file_name'     => uniqid('pay_'),
-    //             ];
-    //             $this->load->library('upload', $cfg);
-    //             if ($this->upload->do_upload('ssLink')) {
-    //                 $ud      = $this->upload->data();
-    //                 $tmpPath = $ud['full_path'];
-    //                 $mime    = $ud['file_type'];
-    //                 $remote  = 'payments/' . $ud['file_name'];
-
-    //                 $this->load->library('b2');
-    //                 try {
-    //                     $this->b2->uploadFile($tmpPath, $remote, $mime);
-    //                     $ssLink = $this->b2->getFileUrl($remote);
-    //                 } catch (\Exception $e) {
-    //                     $errors[] = 'Failed to upload screenshot to storage.';
-    //                 }
-    //                 @unlink($tmpPath);
-    //             } else {
-    //                 $errors[] = $this->upload->display_errors('', '');
-    //             }
-    //         }
-
-    //         // 5) If errors, reload view
-    //         if ($errors) {
-    //             $this->session->set_flashdata('error', implode('<br>', $errors));
-    //             return $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
-    //         }
-
-    //         // 6) Compute grand total for prorating (optional)
-    //         $grandTotal = 0;
-    //         foreach ($selected as $cid) {
-    //             $course = $this->Course_model->getCourseDetails($cid);
-    //             $price  = floatval($course['price']);
-    //             $qty    = isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
-
-    //             // commission per unit
-    //             $rates = json_decode($course['agentComission'], true);
-    //             $map   = [
-    //                 'onlineAgent'   => $rates['onlineAgent']   ?? 0,
-    //                 'officeSupport' => $rates['officeSupport'] ?? 0,
-    //             ];
-    //             preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
-    //             $commPerUnit = 0;
-    //             foreach ($m[1] ?? [] as $t) {
-    //                 if (isset($map[$t])) $commPerUnit += $map[$t];
-    //             }
-
-    //             $sub    = $price * $qty;
-    //             $disc   = $commPerUnit * $qty;
-    //             $net    = $sub - $disc;
-    //             $grandTotal += $net;
-    //         }
-
-    //         // 7) Save each order, subtracting balance on first order
-    //         $first = true;
-    //         foreach ($selected as $cid) {
-    //             $course = $this->Course_model->getCourseDetails($cid);
-    //             $price  = floatval($course['price']);
-    //             $qty    = isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
-
-    //             // commission per unit (repeat or refactor)
-    //             $rates = json_decode($course['agentComission'], true);
-    //             $map   = [
-    //                 'onlineAgent'   => $rates['onlineAgent']   ?? 0,
-    //                 'officeSupport' => $rates['officeSupport'] ?? 0,
-    //             ];
-    //             preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
-    //             $commPerUnit = 0;
-    //             foreach ($m[1] ?? [] as $t) {
-    //                 if (isset($map[$t])) $commPerUnit += $map[$t];
-    //             }
-
-    //             $sub  = $price * $qty;
-    //             $disc = $commPerUnit * $qty;
-    //             $net  = $sub - $disc;
-
-    //             // apply balance only once
-    //             $usedBalance = 0;
-    //             if ($first && $useBalance && $balanceAmt > 0) {
-    //                 $usedBalance = min($net, $balanceAmt);
-    //                 $net -= $usedBalance;
-    //                 $first = false;
-    //             }
-
-    //             $orderData = [
-    //                 'agent_un_id'          => $this->userUnId,
-    //                 'course_un_id'         => $cid,
-    //                 'quantity'             => $qty,
-    //                 'price_per_unit'       => $price,
-    //                 'commission_per_unit'  => $commPerUnit,
-    //                 'commission_amount'    => $disc,
-    //                 'balance_used'         => $usedBalance,
-    //                 'total_amount'         => $net,
-    //                 'gateway_id'           => $gatewayId,
-    //                 'trx'                  => $trx,
-    //                 'ssLink'               => str_replace('\\/','/',$ssLink),
-    //                 'status'               => 0,
-    //                 'created_at'           => date('Y-m-d H:i:s'),
-    //                 'updated_at'           => date('Y-m-d H:i:s'),
-    //             ];
-
-    //             $this->Course_model->buyCourseRequest($orderData);
-    //         }
-
-    //         // 8) Deduct agent balance
-    //         if ($useBalance && $balanceAmt > 0) {
-    //             $agentData = $this->Basic_model->agentDetails($this->userUnId);
-    //             $form = [
-    //                 'current_balance' => $agentData['current_balance'] - $balanceAmt,
-    //             ];
-    //             $newBalance = $agentData['current_balance'] - $balanceAmt;
-    //             $this->Basic_model->updateAgent($this->userUnId, $form);
-    //         }
-
-    //         $this->session->set_flashdata('success',"Courses purchased successfully! {$newBalance} has been deducted from your balance.");
-    //         return redirect('buyCourses');
-    //     }
-
-    //     // GET
-    //     $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
-    // }
-
-
     public function buyCourse($courseId)
-{
-    $courseDetails = $this->Course_model->getCourseDetails($courseId);
-    $agentData     = $this->Basic_model->agentDetails($this->userUnId);
-    $gatewayList   = $this->Course_model->getPaymentGateway();
-    $items         = $this->Course_model->getActiveCourse();
+    {
+        $courseDetails = $this->Course_model->getCourseDetails($courseId);
+        $agentData     = $this->Basic_model->agentDetails($this->userUnId);
+        $gatewayList   = $this->Course_model->getPaymentGateway();
+        $items         = $this->Course_model->getActiveCourse();
 
-    // 1) Validation
-    $this->form_validation->set_rules('quantity',   'Quantity',        'required|integer|greater_than_equal_to[20]');
-    $this->form_validation->set_rules('gateway_id', 'Payment Gateway', 'required|integer');
-    $this->form_validation->set_rules('trx',        'Transaction ID',  'required|trim');
+        // 1) Validation
+        $this->form_validation->set_rules('quantity',   'Quantity',        'required|integer|greater_than_equal_to[20]');
+        $this->form_validation->set_rules('gateway_id', 'Payment Gateway','required|integer');
+        $this->form_validation->set_rules('trx',        'Transaction ID',  'required|trim');
 
-    if ($this->form_validation->run() === FALSE) {
-        return $this->load->view('dashboard/buy_course', compact('courseDetails','agentData','gatewayList','items'));
-    }
-
-    // 2) Gather inputs
-    $quantity  = (int) $this->input->post('quantity');
-    $gatewayId = (int) $this->input->post('gateway_id');
-    $trx       = $this->input->post('trx');
-
-    // 3) Skip screenshot upload
-    $ssLink = "";
-
-    // 4) Calculate commission & totals
-    $map = $courseDetails['type'] === 'premium'
-        ? ['onlineAgent'=>100,'officeSupport'=>100]
-        : ['onlineAgent'=>20, 'officeSupport'=>20];
-
-    preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
-    $types = $m[1] ?? [];
-    $commissionPerUnit = 0;
-    foreach ($types as $t) {
-        if (isset($map[$t])) {
-            $commissionPerUnit += $map[$t];
+        if ($this->form_validation->run() === FALSE) {
+            return $this->load->view('dashboard/buy_course', compact('courseDetails','agentData','gatewayList','items'));
         }
+        // if ($this->form_validation->run() === FALSE) {
+        //     $data = [
+        //         'courseDetails' => $courseDetails,
+        //         'agentData'     => $agentData,
+        //         'gatewayList'   => $gatewayList,
+        //         'items'         => $items
+        //     ];
+        //     return $this->load->view('dashboard/buy_course', $data);
+        // }
+
+        // 2) Gather inputs
+        $quantity  = (int) $this->input->post('quantity');
+        $gatewayId = (int) $this->input->post('gateway_id');
+        $trx       = $this->input->post('trx');
+
+        // 3) Handle screenshot upload → B2
+        $ssLink = null;
+        if (!empty($_FILES['ssLink']['name'])) {
+            // a) Stage locally
+            $cfg = [
+                'upload_path'   => './uploads/tmp/',
+                'allowed_types' => 'jpg|jpeg|png|gif',
+                'max_size'      => 2048,
+                'file_name'     => uniqid('pay_'),
+            ];
+            $this->load->library('upload', $cfg);
+
+            if ($this->upload->do_upload('ssLink')) {
+                $ud         = $this->upload->data();
+                $tmpPath    = $ud['full_path'];
+                $mimeType   = $ud['file_type'];
+                $remoteName = 'payments/' . $ud['file_name'];
+
+                // b) Push to B2
+                $this->load->library('b2');
+                try {
+                    /** @var \BackblazeB2\Models\UploadFile $file */
+                    $file = $this->b2->uploadFile($tmpPath, $remoteName, $mimeType);
+    
+                    // c) Build the URL (bucket must be public)
+                    // We don’t need to check $file as an array—if no exception, upload succeeded
+                    $ssLink = $this->b2->getFileUrl($remoteName);
+                } catch (\Exception $e) {
+                    // you could log $e->getMessage() here for debugging
+                }
+
+                // d) Cleanup
+                @unlink($tmpPath);
+            }
+        }
+
+        $ssLink = str_replace('\\/', '/', $ssLink);
+
+
+        // 4) Calculate commission & totals
+        $map = $courseDetails['type'] === 'premium'
+            ? ['onlineAgent'=>100,'officeSupport'=>100]
+            : ['onlineAgent'=>20, 'officeSupport'=>20];
+            // ? ['onlineAgent'=>100,'officeSupport'=>100,'paymentGateway'=>100]
+            // : ['onlineAgent'=>20, 'officeSupport'=>20, 'paymentGateway'=>20];
+
+        preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
+        $types = $m[1] ?? [];
+        $commissionPerUnit = 0;
+        foreach ($types as $t) {
+            if (isset($map[$t])) {
+                $commissionPerUnit += $map[$t];
+            }
+        }
+
+        $price            = floatval($courseDetails['price']);
+        $bagTotal         = $price * $quantity;
+        $commissionAmount = $commissionPerUnit * $quantity;
+        $finalAmount      = $bagTotal - $commissionAmount;
+
+        // 5) Save order
+        $order = [
+            'agent_un_id'           => $this->userUnId,
+            'course_un_id'            => $courseId,
+            'quantity'             => $quantity,
+            'price_per_unit'       => $price,
+            'commission_per_unit'  => $commissionPerUnit,
+            'commission_amount'    => $commissionAmount,
+            'total_amount'         => $finalAmount,
+            'gateway_id'           => $gatewayId,
+            'trx'                  => $trx,
+            'ssLink'               => $ssLink,
+            'status'               => 0,
+            'created_at'           => date('Y-m-d H:i:s'),
+            'updated_at'           => date('Y-m-d H:i:s')
+        ];
+
+        // echo json_encode($order); // Debugging line, remove in production
+
+        $this->Course_model->buyCourseRequest($order);
+        $this->session->set_flashdata('success', 'Course bought successfully!');
+        redirect(base_url('courses'));
     }
 
-    $price            = floatval($courseDetails['price']);
-    $bagTotal         = $price * $quantity;
-    $commissionAmount = $commissionPerUnit * $quantity;
-    $finalAmount      = $bagTotal - $commissionAmount;
 
-    // 5) Save order
-    $order = [
-        'agent_un_id'           => $this->userUnId,
-        'course_un_id'          => $courseId,
-        'quantity'              => $quantity,
-        'price_per_unit'        => $price,
-        'commission_per_unit'   => $commissionPerUnit,
-        'commission_amount'     => $commissionAmount,
-        'total_amount'          => $finalAmount,
-        'gateway_id'            => $gatewayId,
-        'trx'                   => $trx,
-        'ssLink'                => $ssLink,
-        'status'                => 0,
-        'created_at'            => date('Y-m-d H:i:s'),
-        'updated_at'            => date('Y-m-d H:i:s')
-    ];
+     public function buyCourses(){
+        // Load for both GET and POST
+        $courseList  = $this->Course_model->getActiveCourse();
+        $agentData   = $this->Basic_model->agentDetails($this->userUnId);
+        $gatewayList = $this->Course_model->getPaymentGateway();
 
-    $this->Course_model->buyCourseRequest($order);
-    $this->session->set_flashdata('success', 'Course bought successfully!');
-    redirect(base_url('courses'));
-}
+        if ($this->input->method() === 'post') {
+            // 1) Gather inputs
+            $selected     = $this->input->post('selected')   ?: [];
+            $quantities   = $this->input->post('quantity')   ?: [];
+            $gatewayId    = $this->input->post('gateway_id');
+            $trx          = $this->input->post('trx');
 
-public function buyCourses()
-{
-    // Load for both GET and POST
-    $courseList  = $this->Course_model->getActiveCourse();
-    $agentData   = $this->Basic_model->agentDetails($this->userUnId);
-    $gatewayList = $this->Course_model->getPaymentGateway();
+            // 2) Agent‐balance feature
+            $useBalance = $this->input->post('useBalance') ? true : false;
+            $balanceAmt = $useBalance
+                ? $this->input->post('balance_amt')
+                : 0.0;
 
-    if ($this->input->method() === 'post') {
-        // 1) Gather inputs
-        $selected     = $this->input->post('selected')   ?: [];
-        $quantities   = $this->input->post('quantity')   ?: [];
-        $gatewayId    = $this->input->post('gateway_id');
-        $trx          = $this->input->post('trx');
+            // 3) Validation
+            $errors = [];
+            if (empty($selected)) {
+                $errors[] = 'Please select at least one course.';
+            } else {
+                // total qty
+                $totalQty = 0;
+                foreach ($selected as $cid) {
+                    $totalQty += isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
+                }
+                if ($totalQty < 10) {
+                    $errors[] = 'Total quantity must be at least 10.';
+                }
+                if (empty($gatewayId)) {
+                    $errors[] = 'Please choose a payment gateway.';
+                }
+                if (empty($trx)) {
+                    $errors[] = 'Transaction ID is required.';
+                }
+                if (empty($_FILES['ssLink']['name'])) {
+                    $errors[] = 'Payment screenshot is required.';
+                }
+                // balance validation
+                if ($useBalance && $balanceAmt > $agentData['current_balance']) {
+                    $errors[] = 'Cannot use more than your current balance.';
+                }
+            }
 
-        // 2) Agent‐balance feature
-        $useBalance = $this->input->post('useBalance') ? true : false;
-        $balanceAmt = $useBalance
-            ? $this->input->post('balance_amt')
-            : 0.0;
+            // 4) Screenshot upload
+            $ssLink = null;
+            if (empty($errors) && ! empty($_FILES['ssLink']['name'])) {
+                $cfg = [
+                    'upload_path'   => './uploads/tmp/',
+                    'allowed_types' => 'jpg|jpeg|png|gif',
+                    'max_size'      => 4069,
+                    'file_name'     => uniqid('pay_'),
+                ];
+                $this->load->library('upload', $cfg);
+                if ($this->upload->do_upload('ssLink')) {
+                    $ud      = $this->upload->data();
+                    $tmpPath = $ud['full_path'];
+                    $mime    = $ud['file_type'];
+                    $remote  = 'payments/' . $ud['file_name'];
 
-        // 3) Validation
-        $errors = [];
-        if (empty($selected)) {
-            $errors[] = 'Please select at least one course.';
-        } else {
-            $totalQty = 0;
+                    $this->load->library('b2');
+                    try {
+                        $this->b2->uploadFile($tmpPath, $remote, $mime);
+                        $ssLink = $this->b2->getFileUrl($remote);
+                    } catch (\Exception $e) {
+                        $errors[] = 'Failed to upload screenshot to storage.';
+                    }
+                    @unlink($tmpPath);
+                } else {
+                    $errors[] = $this->upload->display_errors('', '');
+                }
+            }
+
+            // 5) If errors, reload view
+            if ($errors) {
+                $this->session->set_flashdata('error', implode('<br>', $errors));
+                return $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
+            }
+
+            // 6) Compute grand total for prorating (optional)
+            $grandTotal = 0;
             foreach ($selected as $cid) {
-                $totalQty += isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
+                $course = $this->Course_model->getCourseDetails($cid);
+                $price  = floatval($course['price']);
+                $qty    = isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
+
+                // commission per unit
+                $rates = json_decode($course['agentComission'], true);
+                $map   = [
+                    'onlineAgent'   => $rates['onlineAgent']   ?? 0,
+                    'officeSupport' => $rates['officeSupport'] ?? 0,
+                ];
+                preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
+                $commPerUnit = 0;
+                foreach ($m[1] ?? [] as $t) {
+                    if (isset($map[$t])) $commPerUnit += $map[$t];
+                }
+
+                $sub    = $price * $qty;
+                $disc   = $commPerUnit * $qty;
+                $net    = $sub - $disc;
+                $grandTotal += $net;
             }
-            if ($totalQty < 10) {
-                $errors[] = 'Total quantity must be at least 10.';
+
+            // 7) Save each order, subtracting balance on first order
+            $first = true;
+            foreach ($selected as $cid) {
+                $course = $this->Course_model->getCourseDetails($cid);
+                $price  = floatval($course['price']);
+                $qty    = isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
+
+                // commission per unit (repeat or refactor)
+                $rates = json_decode($course['agentComission'], true);
+                $map   = [
+                    'onlineAgent'   => $rates['onlineAgent']   ?? 0,
+                    'officeSupport' => $rates['officeSupport'] ?? 0,
+                ];
+                preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
+                $commPerUnit = 0;
+                foreach ($m[1] ?? [] as $t) {
+                    if (isset($map[$t])) $commPerUnit += $map[$t];
+                }
+
+                $sub  = $price * $qty;
+                $disc = $commPerUnit * $qty;
+                $net  = $sub - $disc;
+
+                // apply balance only once
+                $usedBalance = 0;
+                if ($first && $useBalance && $balanceAmt > 0) {
+                    $usedBalance = min($net, $balanceAmt);
+                    $net -= $usedBalance;
+                    $first = false;
+                }
+
+                $orderData = [
+                    'agent_un_id'          => $this->userUnId,
+                    'course_un_id'         => $cid,
+                    'quantity'             => $qty,
+                    'price_per_unit'       => $price,
+                    'commission_per_unit'  => $commPerUnit,
+                    'commission_amount'    => $disc,
+                    'balance_used'         => $usedBalance,
+                    'total_amount'         => $net,
+                    'gateway_id'           => $gatewayId,
+                    'trx'                  => $trx,
+                    'ssLink'               => str_replace('\\/','/',$ssLink),
+                    'status'               => 0,
+                    'created_at'           => date('Y-m-d H:i:s'),
+                    'updated_at'           => date('Y-m-d H:i:s'),
+                ];
+
+                $this->Course_model->buyCourseRequest($orderData);
             }
-            if (empty($gatewayId)) {
-                $errors[] = 'Please choose a payment gateway.';
+
+            // 8) Deduct agent balance
+            if ($useBalance && $balanceAmt > 0) {
+                $agentData = $this->Basic_model->agentDetails($this->userUnId);
+                $form = [
+                    'current_balance' => $agentData['current_balance'] - $balanceAmt,
+                ];
+                $newBalance = $agentData['current_balance'] - $balanceAmt;
+                $this->Basic_model->updateAgent($this->userUnId, $form);
             }
-            if (empty($trx)) {
-                $errors[] = 'Transaction ID is required.';
-            }
-            if ($useBalance && $balanceAmt > $agentData['current_balance']) {
-                $errors[] = 'Cannot use more than your current balance.';
-            }
+
+            $this->session->set_flashdata('success',"Courses purchased successfully! {$newBalance} has been deducted from your balance.");
+            return redirect('buyCourses');
         }
 
-        // 4) Skip screenshot upload
-        $ssLink = "";
-
-        // 5) If errors, reload view
-        if ($errors) {
-            $this->session->set_flashdata('error', implode('<br>', $errors));
-            return $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
-        }
-
-        // 6) Compute grand total for prorating
-        $grandTotal = 0;
-        foreach ($selected as $cid) {
-            $course = $this->Course_model->getCourseDetails($cid);
-            $price  = floatval($course['price']);
-            $qty    = isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
-
-            $rates = json_decode($course['agentComission'], true);
-            $map   = [
-                'onlineAgent'   => $rates['onlineAgent']   ?? 0,
-                'officeSupport' => $rates['officeSupport'] ?? 0,
-            ];
-            preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
-            $commPerUnit = 0;
-            foreach ($m[1] ?? [] as $t) {
-                if (isset($map[$t])) $commPerUnit += $map[$t];
-            }
-
-            $sub    = $price * $qty;
-            $disc   = $commPerUnit * $qty;
-            $net    = $sub - $disc;
-            $grandTotal += $net;
-        }
-
-        // 7) Save each order, subtracting balance on first order
-        $first = true;
-        foreach ($selected as $cid) {
-            $course = $this->Course_model->getCourseDetails($cid);
-            $price  = floatval($course['price']);
-            $qty    = isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
-
-            $rates = json_decode($course['agentComission'], true);
-            $map   = [
-                'onlineAgent'   => $rates['onlineAgent']   ?? 0,
-                'officeSupport' => $rates['officeSupport'] ?? 0,
-            ];
-            preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
-            $commPerUnit = 0;
-            foreach ($m[1] ?? [] as $t) {
-                if (isset($map[$t])) $commPerUnit += $map[$t];
-            }
-
-            $sub  = $price * $qty;
-            $disc = $commPerUnit * $qty;
-            $net  = $sub - $disc;
-
-            $usedBalance = 0;
-            if ($first && $useBalance && $balanceAmt > 0) {
-                $usedBalance = min($net, $balanceAmt);
-                $net -= $usedBalance;
-                $first = false;
-            }
-
-            $orderData = [
-                'agent_un_id'          => $this->userUnId,
-                'course_un_id'         => $cid,
-                'quantity'             => $qty,
-                'price_per_unit'       => $price,
-                'commission_per_unit'  => $commPerUnit,
-                'commission_amount'    => $disc,
-                'balance_used'         => $usedBalance,
-                'total_amount'         => $net,
-                'gateway_id'           => $gatewayId,
-                'trx'                  => $trx,
-                'ssLink'               => $ssLink,
-                'status'               => 0,
-                'created_at'           => date('Y-m-d H:i:s'),
-                'updated_at'           => date('Y-m-d H:i:s'),
-            ];
-
-            $this->Course_model->buyCourseRequest($orderData);
-        }
-
-        // 8) Deduct agent balance
-        if ($useBalance && $balanceAmt > 0) {
-            $agentData = $this->Basic_model->agentDetails($this->userUnId);
-            $form = [
-                'current_balance' => $agentData['current_balance'] - $balanceAmt,
-            ];
-            $newBalance = $agentData['current_balance'] - $balanceAmt;
-            $this->Basic_model->updateAgent($this->userUnId, $form);
-        }
-
-        $this->session->set_flashdata('success',"Courses purchased successfully! {$newBalance} has been deducted from your balance.");
-        return redirect('buyCourses');
+        // GET
+        $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
     }
 
-    // GET
-    $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
-}
+
+//     public function buyCourse($courseId)
+// {
+//     $courseDetails = $this->Course_model->getCourseDetails($courseId);
+//     $agentData     = $this->Basic_model->agentDetails($this->userUnId);
+//     $gatewayList   = $this->Course_model->getPaymentGateway();
+//     $items         = $this->Course_model->getActiveCourse();
+
+//     // 1) Validation
+//     $this->form_validation->set_rules('quantity',   'Quantity',        'required|integer|greater_than_equal_to[20]');
+//     $this->form_validation->set_rules('gateway_id', 'Payment Gateway', 'required|integer');
+//     $this->form_validation->set_rules('trx',        'Transaction ID',  'required|trim');
+
+//     if ($this->form_validation->run() === FALSE) {
+//         return $this->load->view('dashboard/buy_course', compact('courseDetails','agentData','gatewayList','items'));
+//     }
+
+//     // 2) Gather inputs
+//     $quantity  = (int) $this->input->post('quantity');
+//     $gatewayId = (int) $this->input->post('gateway_id');
+//     $trx       = $this->input->post('trx');
+
+//     // 3) Skip screenshot upload
+//     $ssLink = "";
+
+//     // 4) Calculate commission & totals
+//     $map = $courseDetails['type'] === 'premium'
+//         ? ['onlineAgent'=>100,'officeSupport'=>100]
+//         : ['onlineAgent'=>20, 'officeSupport'=>20];
+
+//     preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
+//     $types = $m[1] ?? [];
+//     $commissionPerUnit = 0;
+//     foreach ($types as $t) {
+//         if (isset($map[$t])) {
+//             $commissionPerUnit += $map[$t];
+//         }
+//     }
+
+//     $price            = floatval($courseDetails['price']);
+//     $bagTotal         = $price * $quantity;
+//     $commissionAmount = $commissionPerUnit * $quantity;
+//     $finalAmount      = $bagTotal - $commissionAmount;
+
+//     // 5) Save order
+//     $order = [
+//         'agent_un_id'           => $this->userUnId,
+//         'course_un_id'          => $courseId,
+//         'quantity'              => $quantity,
+//         'price_per_unit'        => $price,
+//         'commission_per_unit'   => $commissionPerUnit,
+//         'commission_amount'     => $commissionAmount,
+//         'total_amount'          => $finalAmount,
+//         'gateway_id'            => $gatewayId,
+//         'trx'                   => $trx,
+//         'ssLink'                => $ssLink,
+//         'status'                => 0,
+//         'created_at'            => date('Y-m-d H:i:s'),
+//         'updated_at'            => date('Y-m-d H:i:s')
+//     ];
+
+//     $this->Course_model->buyCourseRequest($order);
+//     $this->session->set_flashdata('success', 'Course bought successfully!');
+//     redirect(base_url('courses'));
+// }
+
+// public function buyCourses()
+// {
+//     // Load for both GET and POST
+//     $courseList  = $this->Course_model->getActiveCourse();
+//     $agentData   = $this->Basic_model->agentDetails($this->userUnId);
+//     $gatewayList = $this->Course_model->getPaymentGateway();
+
+//     if ($this->input->method() === 'post') {
+//         // 1) Gather inputs
+//         $selected     = $this->input->post('selected')   ?: [];
+//         $quantities   = $this->input->post('quantity')   ?: [];
+//         $gatewayId    = $this->input->post('gateway_id');
+//         $trx          = $this->input->post('trx');
+
+//         // 2) Agent‐balance feature
+//         $useBalance = $this->input->post('useBalance') ? true : false;
+//         $balanceAmt = $useBalance
+//             ? $this->input->post('balance_amt')
+//             : 0.0;
+
+//         // 3) Validation
+//         $errors = [];
+//         if (empty($selected)) {
+//             $errors[] = 'Please select at least one course.';
+//         } else {
+//             $totalQty = 0;
+//             foreach ($selected as $cid) {
+//                 $totalQty += isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
+//             }
+//             if ($totalQty < 10) {
+//                 $errors[] = 'Total quantity must be at least 10.';
+//             }
+//             if (empty($gatewayId)) {
+//                 $errors[] = 'Please choose a payment gateway.';
+//             }
+//             if (empty($trx)) {
+//                 $errors[] = 'Transaction ID is required.';
+//             }
+//             if ($useBalance && $balanceAmt > $agentData['current_balance']) {
+//                 $errors[] = 'Cannot use more than your current balance.';
+//             }
+//         }
+
+//         // 4) Skip screenshot upload
+//         $ssLink = "";
+
+//         // 5) If errors, reload view
+//         if ($errors) {
+//             $this->session->set_flashdata('error', implode('<br>', $errors));
+//             return $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
+//         }
+
+//         // 6) Compute grand total for prorating
+//         $grandTotal = 0;
+//         foreach ($selected as $cid) {
+//             $course = $this->Course_model->getCourseDetails($cid);
+//             $price  = floatval($course['price']);
+//             $qty    = isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
+
+//             $rates = json_decode($course['agentComission'], true);
+//             $map   = [
+//                 'onlineAgent'   => $rates['onlineAgent']   ?? 0,
+//                 'officeSupport' => $rates['officeSupport'] ?? 0,
+//             ];
+//             preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
+//             $commPerUnit = 0;
+//             foreach ($m[1] ?? [] as $t) {
+//                 if (isset($map[$t])) $commPerUnit += $map[$t];
+//             }
+
+//             $sub    = $price * $qty;
+//             $disc   = $commPerUnit * $qty;
+//             $net    = $sub - $disc;
+//             $grandTotal += $net;
+//         }
+
+//         // 7) Save each order, subtracting balance on first order
+//         $first = true;
+//         foreach ($selected as $cid) {
+//             $course = $this->Course_model->getCourseDetails($cid);
+//             $price  = floatval($course['price']);
+//             $qty    = isset($quantities[$cid]) ? (int)$quantities[$cid] : 0;
+
+//             $rates = json_decode($course['agentComission'], true);
+//             $map   = [
+//                 'onlineAgent'   => $rates['onlineAgent']   ?? 0,
+//                 'officeSupport' => $rates['officeSupport'] ?? 0,
+//             ];
+//             preg_match_all('/"([^"]+)"/', $agentData['comission'], $m);
+//             $commPerUnit = 0;
+//             foreach ($m[1] ?? [] as $t) {
+//                 if (isset($map[$t])) $commPerUnit += $map[$t];
+//             }
+
+//             $sub  = $price * $qty;
+//             $disc = $commPerUnit * $qty;
+//             $net  = $sub - $disc;
+
+//             $usedBalance = 0;
+//             if ($first && $useBalance && $balanceAmt > 0) {
+//                 $usedBalance = min($net, $balanceAmt);
+//                 $net -= $usedBalance;
+//                 $first = false;
+//             }
+
+//             $orderData = [
+//                 'agent_un_id'          => $this->userUnId,
+//                 'course_un_id'         => $cid,
+//                 'quantity'             => $qty,
+//                 'price_per_unit'       => $price,
+//                 'commission_per_unit'  => $commPerUnit,
+//                 'commission_amount'    => $disc,
+//                 'balance_used'         => $usedBalance,
+//                 'total_amount'         => $net,
+//                 'gateway_id'           => $gatewayId,
+//                 'trx'                  => $trx,
+//                 'ssLink'               => $ssLink,
+//                 'status'               => 0,
+//                 'created_at'           => date('Y-m-d H:i:s'),
+//                 'updated_at'           => date('Y-m-d H:i:s'),
+//             ];
+
+//             $this->Course_model->buyCourseRequest($orderData);
+//         }
+
+//         // 8) Deduct agent balance
+//         if ($useBalance && $balanceAmt > 0) {
+//             $agentData = $this->Basic_model->agentDetails($this->userUnId);
+//             $form = [
+//                 'current_balance' => $agentData['current_balance'] - $balanceAmt,
+//             ];
+//             $newBalance = $agentData['current_balance'] - $balanceAmt;
+//             $this->Basic_model->updateAgent($this->userUnId, $form);
+//         }
+
+//         $this->session->set_flashdata('success',"Courses purchased successfully! {$newBalance} has been deducted from your balance.");
+//         return redirect('buyCourses');
+//     }
+
+//     // GET
+//     $this->load->view('dashboard/buy_courses', compact('courseList','agentData','gatewayList'));
+// }
 
 
 
