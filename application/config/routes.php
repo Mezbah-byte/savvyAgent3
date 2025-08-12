@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -76,3 +77,9 @@ $route['myGateways/(:any)'] = 'home/myGateways/$1';
 $route['changeGatewayStatus/(:any)/(:any)'] = 'home/changeGatewayStatus/$1/$2';
 
 $route['profile'] = 'Profile/profile';
+
+$route['recharge'] = 'recharge/index';
+$route['recharge/process'] = 'recharge/process';
+$route['recharge/success'] = 'recharge/success';
+$route['recharge/cancel'] = 'recharge/cancel';
+$route['recharge/webhook'] = 'recharge/webhook';

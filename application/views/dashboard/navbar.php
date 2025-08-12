@@ -30,6 +30,7 @@
 
 
 
+
   <ul class="menu-inner py-1">
     <li class="menu-item">
       <a href="<?php echo base_url('dashboard') ?>" class="menu-link">
@@ -49,8 +50,15 @@
 
     <li class="menu-item">
       <a href="<?php echo base_url('courses') ?>" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <i class="menu-icon tf-icons bx bx-book"></i>
         <div data-i18n="Courses">Courses</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="<?php echo base_url('recharge') ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-credit-card"></i>
+        <div data-i18n="Recharge">Recharge</div>
       </a>
     </li>
 
