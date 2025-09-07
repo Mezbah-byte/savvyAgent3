@@ -284,7 +284,9 @@ class Course extends CI_Controller
                             $bincome['created_at'] = date('Y-m-d H:i:s');
                             $bincome['title'] = 'Anniversary Bonus';
                             $bincome['details'] = '1st Anniversary bonus from My Savvy BD';
-                            $this->Basic_model->create_bonus_income($bincome);
+                            if($ibonus > 0){
+                                $this->Basic_model->create_bonus_income($bincome);
+                            }
                         // }
                     } else if ($a == 1) {
                         // if ($userDetails['current_post_id'] > 9) {
