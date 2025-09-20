@@ -286,7 +286,7 @@ class Course extends CI_Controller
                                 $bincome['title'] = $b['title'];
                                 $bincome['details'] = $b['description'];
                                 if($thisBonus > 0) {
-                                    $this->admin_model->create_bonus_income($bincome);
+                                    $this->Basic_model->create_bonus_income($bincome);
                                 }
                             } else if($b['course_un_id'] == $courseDetails['un_id']){
                                 $thisBonus = 0;
@@ -304,14 +304,14 @@ class Course extends CI_Controller
                                 $bincome['title'] = $b['title'];
                                 $bincome['details'] = $b['description'];
                                 if($thisBonus > 0) {
-                                    $this->admin_model->create_bonus_income($bincome);
+                                    $this->Basic_model->create_bonus_income($bincome);
                                 }
                             }
 
                             $form = array();
                             $form['total_income'] = $userDetails['total_income'] + $thisBonus;
                             $form['current_balance'] = $userDetails['current_balance'] + $thisBonus;
-                            $this->admin_model->updateCustomer($userDetails['un_id'], $form);
+                            $this->Basic_model->updateCustomer($userDetails['un_id'], $form);
                         }
 
                         $form = array();
