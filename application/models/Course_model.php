@@ -130,4 +130,9 @@ class Course_model extends CI_Model
         $this->db->where('un_id', $gatewayDetails['agent_un_id']);
         return $this->db->get('agent')->row_array();
     }
+
+    function activeBonusPackagesList() {
+        $this->db->where('status', 1);
+        return $this->db->get('bonus')->result_array();
+    }
 }

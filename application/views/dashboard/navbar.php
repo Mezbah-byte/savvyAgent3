@@ -55,12 +55,12 @@
       </a>
     </li>
 
-    <li class="menu-item">
+    <!-- <li class="menu-item">
       <a href="<?php echo base_url('recharge') ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bx-credit-card"></i>
         <div data-i18n="Recharge">Recharge</div>
       </a>
-    </li>
+    </li> -->
 
 
     <li class="menu-item">

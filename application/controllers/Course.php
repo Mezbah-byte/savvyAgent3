@@ -249,7 +249,7 @@ class Course extends CI_Controller
                     if ($a == 0) {
                         // $bonus = $courseDetails['type'] == "premium"? 500:$courseDetails['type'] == "regularMember"?200:0;
                         $bonus = $courseDetails['type'] == "premium" ? $courseDetails['refer_comission'] : ($courseDetails['type'] == "regularMember" ? $courseDetails['refer_comission'] : 0);
-                        // $ibonus = 0*$quantity;
+                        // $ibonus = 500*$quantity;
                         $ibonus = 0;
 
                         // if($courseDetails['type'] == "premium"){
@@ -267,6 +267,52 @@ class Course extends CI_Controller
                         // } else{
                         //     $ibonus = 0;
                         // }
+
+                        $bonusPackage = $this->Course_model->activeBonusPackagesList();
+
+                        foreach($bonusPackage as $b){
+                            if($b['type'] == "all"){
+                                $thisBonus = 0;
+                                $thisBonus += $b['amount'] * $quantity;
+
+                                $bincome = array();
+                                $bincome['from_user'] = $customerDetails['un_id'];
+                                $bincome['to_user'] = $userDetails['un_id'];
+                                $bincome['amount'] = $thisBonus;
+                                $bincome['package_id'] = $courseDetails['un_id'];
+                                $bincome['generation'] = $a;
+                                $bincome['source'] = 'bonus_income';
+                                $bincome['created_at'] = date('Y-m-d H:i:s');
+                                $bincome['title'] = $b['title'];
+                                $bincome['details'] = $b['description'];
+                                if($thisBonus > 0) {
+                                    $this->admin_model->create_bonus_income($bincome);
+                                }
+                            } else if($b['course_un_id'] == $courseDetails['un_id']){
+                                $thisBonus = 0;
+                                $thisBonus += $b['amount'] * $quantity;
+
+
+                                $bincome = array();
+                                $bincome['from_user'] = $customerDetails['un_id'];
+                                $bincome['to_user'] = $userDetails['un_id'];
+                                $bincome['amount'] = $thisBonus;
+                                $bincome['package_id'] = $courseDetails['un_id'];
+                                $bincome['generation'] = $a;
+                                $bincome['source'] = 'bonus_income';
+                                $bincome['created_at'] = date('Y-m-d H:i:s');
+                                $bincome['title'] = $b['title'];
+                                $bincome['details'] = $b['description'];
+                                if($thisBonus > 0) {
+                                    $this->admin_model->create_bonus_income($bincome);
+                                }
+                            }
+
+                            $form = array();
+                            $form['total_income'] = $userDetails['total_income'] + $thisBonus;
+                            $form['current_balance'] = $userDetails['current_balance'] + $thisBonus;
+                            $this->admin_model->updateCustomer($userDetails['un_id'], $form);
+                        }
 
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity) + $ibonus;
@@ -290,7 +336,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 1) {
                         // if ($userDetails['current_post_id'] > 9) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -301,7 +347,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 2) {
                         // if ($userDetails['current_post_id'] > 9) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -312,7 +358,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 3) {
                         // if ($userDetails['current_post_id'] > 19) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -323,7 +369,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 4) {
                         // if ($userDetails['current_post_id'] > 19) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -334,7 +380,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 5) {
                         // if ($userDetails['current_post_id'] > 29) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -345,7 +391,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 6) {
                         // if ($userDetails['current_post_id'] > 29) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -356,7 +402,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 7) {
                         // if ($userDetails['current_post_id'] > 39) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -367,7 +413,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 8) {
                         // if ($userDetails['current_post_id'] > 49) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -378,7 +424,7 @@ class Course extends CI_Controller
                         // }
                     } else if ($a == 9) {
                         // if ($userDetails['current_post_id'] > 49) {
-                        $bonus = $courseDetails['type'] == "premium" ? 50 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (50*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -389,7 +435,7 @@ class Course extends CI_Controller
                         // } from here
                     } else if ($a == 10) {
                         // if ($userDetails['current_post_id'] > 59) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -400,7 +446,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 11) {
                         // if ($userDetails['current_post_id'] > 69) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -411,7 +457,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 12) {
                         // if ($userDetails['current_post_id'] > 79) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -422,7 +468,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 13) {
                         // if ($userDetails['current_post_id'] > 89) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -433,7 +479,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 14) {
                         // if ($userDetails['current_post_id'] > 99) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -444,7 +490,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 15) {
                         // if ($userDetails['current_post_id'] > 109) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -455,7 +501,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 16) {
                         // if ($userDetails['current_post_id'] > 119) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -466,7 +512,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 17) {
                         // if ($userDetails['current_post_id'] > 129) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -477,7 +523,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 18) {
                         // if ($userDetails['current_post_id'] > 139) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
@@ -488,7 +534,7 @@ class Course extends CI_Controller
                         // }
                     } else if($a == 19) {
                         // if ($userDetails['current_post_id'] > 149) {
-                        $bonus = $courseDetails['type'] == "premium" ? 25 : ($courseDetails['type'] == "regularMember" ? 0 : 0);
+                        $bonus = $courseDetails['type'] == "premium" ? (25*$courseDetails['show_quantity']) : ($courseDetails['type'] == "regularMember" ? 0 : 0);
                         if($userDetails['type'] != "premium"){
                             $bonus = 0;
                         }
