@@ -307,12 +307,15 @@ class Course extends CI_Controller
                                     $this->Basic_model->create_bonus_income($bincome);
                                 }
                             }
+                            $userDetails = $this->Basic_model->getUserDetails($referedBy);
 
                             $form = array();
                             $form['total_income'] = $userDetails['total_income'] + $thisBonus;
                             $form['current_balance'] = $userDetails['current_balance'] + $thisBonus;
                             $this->Basic_model->updateCustomer($userDetails['un_id'], $form);
                         }
+
+                        $userDetails = $this->Basic_model->getUserDetails($referedBy);
 
                         $form = array();
                         $form['total_income'] = $userDetails['total_income'] + ($bonus * $quantity) + $ibonus;
