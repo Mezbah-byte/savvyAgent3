@@ -271,8 +271,8 @@ class Course extends CI_Controller
                         $bonusPackage = $this->Course_model->activeBonusPackagesList();
 
                         foreach($bonusPackage as $b){
+                            $thisBonus = 0;
                             if($b['type'] == "all"){
-                                $thisBonus = 0;
                                 $thisBonus += $b['amount'] * $quantity;
 
                                 $bincome = array();
@@ -289,7 +289,6 @@ class Course extends CI_Controller
                                     $this->Basic_model->create_bonus_income($bincome);
                                 }
                             } else if($b['course_un_id'] == $courseDetails['un_id']){
-                                $thisBonus = 0;
                                 $thisBonus += $b['amount'] * $quantity;
 
 
