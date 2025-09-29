@@ -269,11 +269,17 @@ class Course extends CI_Controller
                         // }
 
                         $bonusPackage = $this->Course_model->activeBonusPackagesList();
+                        $userHasReferd = $this->Course_model->checkUserLastReferBonus($userDetails['un_id'], '2025-09-26 00:00:01');
 
                         foreach($bonusPackage as $b){
                             $thisBonus = 0;
                             if($b['type'] == "all"){
-                                $thisBonus += $b['amount'] * $quantity;
+                                // $thisBonus += $b['amount'] * $quantity;
+                                if($userHasReferd){
+                                    $thisBonus += ($b['amount']+$b['extra_amount']) * $quantity;
+                                } else{
+                                    $thisBonus += $b['amount'] * $quantity;
+                                }
 
                                 $bincome = array();
                                 $bincome['from_user'] = $customerDetails['un_id'];
@@ -289,7 +295,12 @@ class Course extends CI_Controller
                                     $this->Basic_model->create_bonus_income($bincome);
                                 }
                             } else if($b['course_un_id'] == $courseDetails['un_id']){
-                                $thisBonus += $b['amount'] * $quantity;
+                                // $thisBonus += $b['amount'] * $quantity;
+                                if($userHasReferd){
+                                    $thisBonus += ($b['amount']+$b['extra_amount']) * $quantity;
+                                } else{
+                                    $thisBonus += $b['amount'] * $quantity;
+                                }
 
 
                                 $bincome = array();

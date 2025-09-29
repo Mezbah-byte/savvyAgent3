@@ -135,4 +135,18 @@ class Course_model extends CI_Model
         $this->db->where('status', 1);
         return $this->db->get('bonus')->result_array();
     }
+
+    function checkUserLastReferBonus($un_id, $date) {
+        $this->db->where('to_user', $un_id);
+        $this->db->where('source', 'affiliate');
+        $this->db->where('generation', 0);
+        $this->db->where('created_at >=', $date);
+        $q = $this->db->get('income')->result_array();
+
+        if (count($q) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
