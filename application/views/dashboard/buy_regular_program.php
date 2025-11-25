@@ -5,7 +5,7 @@
 <?php
 $unitPrice      = floatval($programDetails['price']);
 $deliveryCharge = 0;
-$minQty         = 1;
+$minQty         = 7;
 
 // Commission: Fixed 50 taka per package
 $commissionPerUnit = 50;

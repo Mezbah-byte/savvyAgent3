@@ -194,6 +194,7 @@ class RegularProgram extends CI_Controller
     public function buyProgram($programId)
     {
         $programDetails = $this->RegularProgram_model->getProgramDetails($programId);
+        $programDetails['price'] = $programDetails['price']+$programDetails['vat'];
         $agentData      = $this->Basic_model->agentDetails($this->userUnId);
         $gatewayList    = $this->RegularProgram_model->getPaymentGateway();
         $items          = $this->RegularProgram_model->getActivePrograms();
