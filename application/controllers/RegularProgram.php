@@ -153,14 +153,34 @@ class RegularProgram extends CI_Controller
         
         $customerDetails = $this->Basic_model->getUserDetails($userUnId);
 
+        // Check if agent has enough inventory
+        $AgentDetails = $this->RegularProgram_model->getAgentDetailsByGateway($getProgramOrderDetails['gatewayId']);
+        $availableInventory = $this->RegularProgram_model->getAgentAvailableInventory($AgentDetails['un_id'], $packageId);
+        
+        if ($availableInventory < $quantity) {
+            $this->session->set_flashdata('error', "Insufficient inventory! You have only {$availableInventory} regular programs available, but order requires {$quantity}.");
+            redirect(base_url() . 'regularProgram/orderList/0');
+            return;
+        }
+
         // Update order status to approved
         $form = array();
         $form['status'] = 1;
         $this->RegularProgram_model->updateProgramOrder($id, $form);
 
         // Update agent's inventory
-        $AgentDetails = $this->RegularProgram_model->getAgentDetailsByGateway($getProgramOrderDetails['gatewayId']);
-        $this->RegularProgram_model->update_status_requests($AgentDetails['un_id'], $packageId, 2, $quantity);
+        $updatedCount = $this->RegularProgram_model->update_status_requests($AgentDetails['un_id'], $packageId, 2, $quantity);
+        
+        // Double-check that the inventory was actually updated
+        if ($updatedCount < $quantity) {
+            // Rollback the order approval
+            $rollbackForm = array('status' => 0);
+            $this->RegularProgram_model->updateProgramOrder($id, $rollbackForm);
+            
+            $this->session->set_flashdata('error', "Inventory update failed! Only {$updatedCount} programs were available.");
+            redirect(base_url() . 'regularProgram/orderList/0');
+            return;
+        }
 
         // Update customer's package status
         $customerUpdateForm = array();

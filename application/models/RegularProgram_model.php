@@ -167,6 +167,20 @@ class RegularProgram_model extends CI_Model
      * @param int $quantity
      * @return int
      */
+    /**
+     * Get agent's available inventory count for a specific program
+     *
+     * @param string $agent_un_id
+     * @param string $program_un_id
+     * @return int
+     */
+    public function getAgentAvailableInventory($agent_un_id, $program_un_id) {
+        $this->db->where('agent_un_id', $agent_un_id);
+        $this->db->where('program_un_id', $program_un_id);
+        $this->db->where('status', 1); // Active/available programs
+        return $this->db->count_all_results('agentregularprograms');
+    }
+
     public function update_status_requests($agent_un_id, $program_un_id, $new_status, $quantity) {
         // 1) fetch up to $quantity active IDs
         $active = $this->db
