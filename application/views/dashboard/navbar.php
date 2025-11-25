@@ -55,6 +55,13 @@
       </a>
     </li>
 
+    <li class="menu-item">
+      <a href="<?php echo base_url('regularPrograms') ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-briefcase"></i>
+        <div data-i18n="Regular Programs">Regular Programs</div>
+      </a>
+    </li>
+
     <!-- <li class="menu-item">
       <a href="<?php echo base_url('recharge') ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bx-credit-card"></i>
@@ -66,24 +73,75 @@
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-layout"></i>
-        <div data-i18n="Orders">Orders</div>
+        <div data-i18n="Orders">Course Orders</div>
       </a>
 
       <ul class="menu-sub">
 
         <li class="menu-item">
           <a href="<?php echo base_url('orderList/0') ?>" class="menu-link">
-            <div data-i18n="Payment Pending Orders">Payment Pending Orders</div>
+            <div data-i18n="Payment Pending Orders">Pending Orders</div>
           </a>
         </li>
         <li class="menu-item">
           <a href="<?php echo base_url('orderList/1') ?>" class="menu-link">
-            <div data-i18n="Payment Successfull Orders">Payment Successfull Orders</div>
+            <div data-i18n="Payment Successfull Orders">Approved Orders</div>
           </a>
         </li>
         <li class="menu-item">
           <a href="<?php echo base_url('orderList/2') ?>" class="menu-link">
-            <div data-i18n="Payment Canceled Orders">Payment Canceled Orders</div>
+            <div data-i18n="Payment Canceled Orders">Rejected Orders</div>
+          </a>
+        </li>
+
+      </ul>
+    </li>
+
+
+    <li class="menu-item">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-file"></i>
+        <div data-i18n="Program Orders">Regular Program Orders</div>
+      </a>
+
+      <ul class="menu-sub">
+
+        <li class="menu-item">
+          <a href="<?php echo base_url('regularProgram/orderList/0') ?>" class="menu-link">
+            <div data-i18n="Pending Program Orders">Pending Orders</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="<?php echo base_url('regularProgram/orderList/1') ?>" class="menu-link">
+            <div data-i18n="Approved Program Orders">Approved Orders</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="<?php echo base_url('regularProgram/orderList/2') ?>" class="menu-link">
+            <div data-i18n="Rejected Program Orders">Rejected Orders</div>
+          </a>
+        </li>
+
+      </ul>
+    </li>
+
+
+    <li class="menu-item">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-shopping-bag"></i>
+        <div data-i18n="My Inventory">My Inventory</div>
+      </a>
+
+      <ul class="menu-sub">
+
+        <li class="menu-item">
+          <a href="<?php echo base_url('regularProgram/myPrograms') ?>" class="menu-link">
+            <div data-i18n="My Programs">My Regular Programs</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="<?php echo base_url('regularProgram/buyRequestList') ?>" class="menu-link">
+            <div data-i18n="Buy Requests">Buy Requests</div>
           </a>
         </li>
 

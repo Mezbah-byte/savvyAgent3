@@ -73,6 +73,17 @@ $route['cancelOrder/(:any)'] = 'course/cancelCoursePayment/$1';
 $route['buyCourse/(:any)'] = 'course/buyCourse/$1';
 $route['buyCourses'] = 'course/buyCourses';
 
+// Regular Programs
+$route['regularPrograms'] = 'regularProgram/programList';
+$route['regularProgram/orderList/(:any)'] = 'regularProgram/orderList/$1';
+$route['regularProgram/acceptOrder/(:any)'] = 'regularProgram/acceptOrder/$1';
+$route['regularProgram/rejectOrder/(:any)'] = 'regularProgram/rejectOrder/$1';
+$route['regularProgram/buyProgram/(:any)'] = 'regularProgram/buyProgram/$1';
+$route['regularProgram/myPrograms'] = 'regularProgram/myPrograms';
+$route['regularProgram/buyRequestList'] = 'regularProgram/buyRequestList';
+$route['regularProgram/buyRequestList/(:any)'] = 'regularProgram/buyRequestList/$1';
+$route['regularProgram/viewRequest/(:num)'] = 'regularProgram/viewRequest/$1';
+
 $route['myGateways/(:any)'] = 'home/myGateways/$1';
 $route['changeGatewayStatus/(:any)/(:any)'] = 'home/changeGatewayStatus/$1/$2';
 
