@@ -55,7 +55,7 @@ class RegularProgram_model extends CI_Model
     }
 
     /**
-     * Get regular program details based on un_id
+     * Get regular program details
      *
      * @param string $unId
      * @return array|bool
@@ -63,6 +63,18 @@ class RegularProgram_model extends CI_Model
     public function getProgramDetails($unId)
     {
         $this->db->where('un_id', $unId);
+        return $this->db->get('regular_program_packages')->row_array();
+    }
+
+    /**
+     * Get package details (alias for getProgramDetails)
+     *
+     * @param string $packageId
+     * @return array|bool
+     */
+    public function packageDetails($packageId)
+    {
+        $this->db->where('un_id', $packageId);
         return $this->db->get('regular_program_packages')->row_array();
     }
 
@@ -352,5 +364,80 @@ class RegularProgram_model extends CI_Model
         $counts['pending'] = $this->db->count_all_results('agentregularprograms');
 
         return $counts;
+    }
+
+    /**
+     * Get user's regular package list
+     */
+    public function userRegularPackagesList($un_id) 
+    {
+        $this->db->where('user_un_id', $un_id);
+        $this->db->where('status', 1); // Only approved packages
+        return $this->db->get('regular_program_package_update')->result_array();
+    }
+
+    /**
+     * Update user wallet and package info
+     */
+    public function updateUserWallet($un_id, $form) 
+    {
+        $this->db->where('un_id', $un_id);
+        $this->db->update('customers', $form);
+    }
+
+    /**
+     * Add regular program referral/generation/royalty bonus
+     */
+    public function addRegularProgramReferBonus($form) 
+    {
+        $this->db->insert('regular_program_refer_bonus', $form);
+    }
+
+    /**
+     * Increment user's regular program amounts atomically
+     */
+    public function incrementUserRegularProgramAmounts($un_id, $updateAmount, $withdrawableAmount) 
+    {
+        $this->db->set('current_regular_program_update_amount', 'current_regular_program_update_amount + ' . (float)$updateAmount, FALSE);
+        $this->db->set('total_regular_program_update_amount', 'total_regular_program_update_amount + ' . (float)$updateAmount, FALSE);
+        $this->db->set('current_regular_program_withdraw_amount', 'current_regular_program_withdraw_amount + ' . (float)$withdrawableAmount, FALSE);
+        $this->db->set('total_regular_program_withdraw_amount', 'total_regular_program_withdraw_amount + ' . (float)$withdrawableAmount, FALSE);
+        $this->db->where('un_id', $un_id);
+        $this->db->update('customers');
+    }
+
+    /**
+     * Get all users with regular program packages
+     */
+    public function getAllRegularProgramIds() 
+    {
+        $this->db->where('current_regular_program_package_id !=', '');
+        $data = $this->db->get('customers')->result_array();
+        return $data;
+    }
+
+    /**
+     * Get all users with 7 or more packages
+     */
+    public function getAllsevenAboveUsers() 
+    {
+        $this->db->where('current_regular_program_package_id !=', '');
+        $data = $this->db->get('customers')->result_array();
+        $finalData = [];
+        
+        foreach ($data as $user) {
+            $userPackages = $this->userRegularPackagesList($user['un_id']);
+            $totalPackages = 0;
+            
+            foreach ($userPackages as $pkg) {
+                $totalPackages += (int)$pkg['quantity'];
+            }
+            
+            if ($totalPackages >= 7) {
+                $finalData[] = $user;
+            }
+        }
+        
+        return $finalData;
     }
 }

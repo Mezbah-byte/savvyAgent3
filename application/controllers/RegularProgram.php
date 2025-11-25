@@ -148,18 +148,99 @@ class RegularProgram extends CI_Controller
         }
 
         $quantity = $getProgramOrderDetails['quantity'];
-        $customerDetails = $this->Basic_model->getUserDetails($getProgramOrderDetails['user_un_id']);
+        $packageId = $getProgramOrderDetails['regular_program_package_id'];
+        $userUnId = $getProgramOrderDetails['user_un_id'];
+        
+        $customerDetails = $this->Basic_model->getUserDetails($userUnId);
 
+        // Update order status to approved
         $form = array();
         $form['status'] = 1;
         $this->RegularProgram_model->updateProgramOrder($id, $form);
 
+        // Update agent's inventory
         $AgentDetails = $this->RegularProgram_model->getAgentDetailsByGateway($getProgramOrderDetails['gatewayId']);
-        $checking = $this->RegularProgram_model->update_status_requests($AgentDetails['un_id'], $getProgramOrderDetails['regular_program_package_id'], 2, $quantity);
+        $this->RegularProgram_model->update_status_requests($AgentDetails['un_id'], $packageId, 2, $quantity);
 
-        $this->session->set_flashdata('success', 'Order accepted successfully!');
+        // Update customer's package status
+        $customerUpdateForm = array();
+        $customerUpdateForm['current_regular_program_package_id'] = $packageId;
+        
+        // If user is 'open' type, upgrade to 'premium' and set referral data
+        if ($customerDetails['type'] == 'open' && !empty($customerDetails['refered_by'])) {
+            $referrerData = $this->Basic_model->getUserDetails($customerDetails['refered_by']);
+            
+            if ($referrerData) {
+                $customerUpdateForm['type'] = 'premium';
+                // Set placement_id to referrer's un_id (simplified, no network calculation)
+                $customerUpdateForm['placement_id'] = $referrerData['un_id'];
+            }
+        }
+        
+        $this->RegularProgram_model->updateUserWallet($userUnId, $customerUpdateForm);
+
+        // Send referral and generation bonuses
+        if (!empty($customerDetails['refered_by'])) {
+            $this->sendReferBonus($userUnId, $customerDetails['refered_by'], $packageId, $quantity);
+        }
+
+        // Send royalty bonus
+        $this->sendRoyality($userUnId, $packageId, $quantity);
+
+        $this->session->set_flashdata('success', 'Order accepted successfully! Bonuses distributed.');
         redirect(base_url() . 'regularProgram/orderList/1');
     }
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function rejectOrder($id)
@@ -334,5 +415,163 @@ class RegularProgram extends CI_Controller
 
         // Load the view with data
         $this->load->view('dashboard/view_regular_program_request', $data);
+    }
+
+    /**
+     * Send referral and generation bonuses
+     */
+    private function sendReferBonus($sender, $receiver, $packageId, $packageQuantity) 
+    {
+        try {
+            $packageDetails = $this->RegularProgram_model->packageDetails($packageId);
+            $refererDetails = $this->Basic_model->getUserDetails($receiver);
+
+            if (!$packageDetails || !$refererDetails) {
+                return false;
+            }
+
+            // Direct referral bonus: 10% / 2 = 5%
+            $update_amount = ((($packageDetails['price'] * 10) / 100) / 2) * $packageQuantity; 
+            $withdrawable_amount = ((($packageDetails['price'] * 10) / 100) / 2) * $packageQuantity;
+
+            // Only give bonus if referrer has a regular program package
+            if ($refererDetails && !empty($refererDetails['current_regular_program_package_id'])) {
+                $referBonusForm = array(
+                    'sender_un_id' => $sender,
+                    'receiver_un_id' => $receiver,
+                    'update_amount' => $update_amount,
+                    'withdrawable_amount' => $withdrawable_amount,
+                    'package_id' => $packageId,
+                    'status' => '1',
+                    'level' => 0,
+                    'source' => 'referal',
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $this->RegularProgram_model->addRegularProgramReferBonus($referBonusForm);
+                $this->RegularProgram_model->incrementUserRegularProgramAmounts(
+                    $refererDetails['un_id'], 
+                    (float)$update_amount, 
+                    (float)$withdrawable_amount
+                );
+            }
+
+            // Generation bonuses: 1% / 2 = 0.5% for levels 1-9
+            $uData = $refererDetails;
+            $level = 1;
+
+            while ($level < 10) {
+                if (empty($uData['refered_by'])) {
+                    break;
+                }
+
+                $uData = $this->Basic_model->getUserDetails($uData['refered_by']);
+                
+                if (!$uData) {
+                    break;
+                }
+
+                // Only give bonus if upline has a regular program package
+                if ($uData && !empty($uData['current_regular_program_package_id'])) {
+                    $level_bonus = (($packageDetails['price'] * 0.01) * $packageQuantity) / 2;  
+                    $level_withdrawable_bonus = (($packageDetails['price'] * 0.01) * $packageQuantity) / 2; 
+
+                    $generationBonusForm = array(
+                        'sender_un_id' => $receiver,
+                        'receiver_un_id' => $uData['un_id'],
+                        'update_amount' => $level_bonus,
+                        'withdrawable_amount' => $level_withdrawable_bonus,
+                        'package_id' => $packageId,
+                        'status' => '1',
+                        'level' => $level,
+                        'source' => 'generation',
+                        'created_at' => date('Y-m-d H:i:s')
+                    );
+
+                    $this->RegularProgram_model->addRegularProgramReferBonus($generationBonusForm);
+                    $this->RegularProgram_model->incrementUserRegularProgramAmounts(
+                        $uData['un_id'], 
+                        (float)$level_bonus, 
+                        (float)$level_withdrawable_bonus
+                    );
+                }
+
+                $level += 1;
+            }
+            
+            return true;
+        } catch (Exception $e) {
+            log_message('error', 'Error in sendReferBonus: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Send royalty bonus to all eligible users
+     */
+    private function sendRoyality($sender, $packageId, $packageQuantity) 
+    {
+        try {
+            $packageDetails = $this->RegularProgram_model->packageDetails($packageId);
+            $senderDetails = $this->Basic_model->getUserDetails($sender);
+            
+            if (!$packageDetails || !$senderDetails) {
+                return false;
+            }
+
+            // Calculate sender's total package count
+            $senderCurrentPackageCount = $packageQuantity;
+            $senderPackages = $this->RegularProgram_model->userRegularPackagesList($sender);
+            
+            foreach ($senderPackages as $pkg) {
+                $senderCurrentPackageCount += (int)$pkg['quantity'];
+            }
+
+            // Get eligible users based on sender's total packages
+            if ($senderCurrentPackageCount >= 7) {
+                $allRegularProgramUsers = $this->RegularProgram_model->getAllsevenAboveUsers();
+            } else {
+                $allRegularProgramUsers = $this->RegularProgram_model->getAllRegularProgramIds();
+            }
+
+            // Calculate royalty distribution: 30% of package price
+            $totalSharesToDistribute = $packageDetails['price'] * 0.30 * $packageQuantity;
+            $totalUsers = count($allRegularProgramUsers) - 1; // Exclude sender
+            
+            if ($totalUsers <= 0) {
+                return true; // No users to distribute to
+            }
+
+            $amountPerUser = $totalSharesToDistribute / $totalUsers;
+
+            foreach ($allRegularProgramUsers as $user) {
+                if ($user['un_id'] == $sender) {
+                    continue; // Skip the sender
+                }
+
+                $upd = (float)($amountPerUser / 2);
+                $wd  = (float)($amountPerUser / 2);
+
+                $royalityBonusForm = array(
+                    'sender_un_id' => $sender,
+                    'receiver_un_id' => $user['un_id'],
+                    'update_amount' => $upd, 
+                    'withdrawable_amount' => $wd,
+                    'package_id' => $packageId,
+                    'status' => '1',
+                    'source' => 'royalty',
+                    'level' => 100,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $this->RegularProgram_model->addRegularProgramReferBonus($royalityBonusForm);
+                $this->RegularProgram_model->incrementUserRegularProgramAmounts($user['un_id'], $upd, $wd);
+            }
+            
+            return true;
+        } catch (Exception $e) {
+            log_message('error', 'Error in sendRoyality: ' . $e->getMessage());
+            return false;
+        }
     }
 }
