@@ -61,11 +61,13 @@ class RegularProgram extends CI_Controller
         }
 
         $myGatewayList = $this->Basic_model->agentGatewayList($this->session->userdata('userUnId'));
+        // echo json_encode($myGatewayList);
 
         $fArray = array();
 
         foreach ($myGatewayList as $gateway) {
             $programRowData = $this->RegularProgram_model->getOrderListByType($type, $gateway['un_id']);
+            // echo json_encode($programRowData);
             foreach ($programRowData as $p) {
                 array_push($fArray, $p);
             }
@@ -121,6 +123,8 @@ class RegularProgram extends CI_Controller
 
         $data['datas'] = $finalArray;
         $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
+
+        // echo json_encode($data);
 
         // Load the view with data
         $this->load->view('dashboard/regular_program_order_list', $data);
