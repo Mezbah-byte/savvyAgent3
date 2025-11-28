@@ -214,11 +214,11 @@ class RegularProgram extends CI_Controller
     function get_network_by_level($un_id, $level = 0)
 	{
 		$network = array();
-		$members = $this->auth_model->team_list($un_id);
+		$members = $this->Basic_model->team_list($un_id);
 
 		foreach ($members as $member) {
 			$member['level'] = $level;
-			if (count($this->auth_model->team_list($member['un_id'])) < 2) {
+			if (count($this->Basic_model->team_list($member['un_id'])) < 2) {
 				$network[] = $member;
 			}
 			$sub_network = $this->get_network_by_level($member['un_id'], $level + 1);
