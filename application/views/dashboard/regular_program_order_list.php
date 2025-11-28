@@ -15,9 +15,9 @@
               <th>User Name</th>
               <th>Phone Number</th>
               <th>Regular Program Name</th>
-              <th>Program Price</th>
-              <th>Quantity</th>
               <th>Total Amount</th>
+              <th>Quantity</th>
+              <th>Program Price</th>
               <th>Requested at</th>
               <th>Worked at</th>
               <th>Payment Method</th>
@@ -43,7 +43,7 @@
                   <td><?php echo $data['programName']; ?></td>
                   <td><?php echo number_format($data['amount'], 2); ?> ৳</td>
                   <td><?php echo $data['quantity']; ?></td>
-                  <td><?php echo number_format($data['amount'] * $data['quantity'], 2); ?> ৳</td>
+                  <td><?php echo number_format($data['amount'] / $data['quantity'], 2); ?> ৳</td>
                   <td><?php echo date('M d, Y H:i', strtotime($data['created_at'])); ?></td>
                   <td><?php echo date('M d, Y H:i', strtotime($data['updated_at'])); ?></td>
                   <td>
