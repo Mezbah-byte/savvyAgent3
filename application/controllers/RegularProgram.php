@@ -578,7 +578,14 @@ class RegularProgram extends CI_Controller
 
             // Calculate royalty distribution: 30% of package price
             $totalSharesToDistribute = $packageDetails['price'] * 0.30 * $packageQuantity;
-            $totalUsers = count($allRegularProgramUsers) - 1; // Exclude sender
+
+            $totalUsers = 0;
+            foreach ($allRegularProgramUsers as $user) {
+                $userPackages = $this->RegularProgram_model->userRegularPackagesList($user['un_id']);
+                foreach ($userPackages as $pkg) {
+                    $totalUsers = $totalUsers + $pkg['quantity'];
+                }
+            }
             
             if ($totalUsers <= 0) {
                 return true; // No users to distribute to
@@ -593,6 +600,17 @@ class RegularProgram extends CI_Controller
 
                 $upd = (float)($amountPerUser / 2);
                 $wd  = (float)($amountPerUser / 2);
+
+                $userPackagess = $this->RegularProgram_model->userRegularPackagesList($user['un_id']);
+                $userPackageCount = 0;
+                foreach ($userPackagess as $pkg) {
+                    $userPackageCount = $userPackageCount + (int)$pkg['quantity'];
+                }
+
+                if($userPackageCount >= 7) {
+                    $upd = $upd*$userPackageCount;
+                    $wd = $wd*$userPackageCount;
+                }
 
                 $royalityBonusForm = array(
                     'sender_un_id' => $sender,
