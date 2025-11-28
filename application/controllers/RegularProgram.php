@@ -189,24 +189,19 @@ class RegularProgram extends CI_Controller
         // Update customer's package status
         $customerUpdateForm = array();
         $customerUpdateForm['current_regular_program_package_id'] = $packageId;
+
+        $uData = $this->Basic_model->getUserDetails($getProgramOrderDetails['referenceId']);
         
         // If user is 'open' type, upgrade to 'premium' and set referral data
-        if ($customerDetails['type'] == 'open' && !empty($customerDetails['refered_by'])) {
-            $referrerData = $this->Basic_model->getUserDetails($customerDetails['refered_by']);
-            
-            if ($referrerData) {
-                $customerUpdateForm['type'] = 'premium';
-                // Set placement_id to referrer's un_id (simplified, no network calculation)
-                $customerUpdateForm['placement_id'] = $referrerData['un_id'];
-            }
+        if ($customerDetails['type'] == 'open') {
+            $customerUpdateForm['type'] = 'premium';
+            $customerUpdateForm['refered_by'] = $getProgramOrderDetails['referenceId'];
+            $customerUpdateForm['placement_id'] = !empty($this->get_network_by_level($uData['un_id'], 0)) ? count($this->Basic_model->team_list($uData['un_id'])) < 2 ? $uData['un_id'] : $this->get_network_by_level($uData['un_id'], 0)[0]['un_id'] : $uData['un_id'];
         }
         
         $this->RegularProgram_model->updateUserWallet($userUnId, $customerUpdateForm);
 
-        // Send referral and generation bonuses
-        if (!empty($customerDetails['refered_by'])) {
-            $this->sendReferBonus($userUnId, $customerDetails['refered_by'], $packageId, $quantity);
-        }
+        $this->sendReferBonus($userUnId, $customerDetails['refered_by'], $packageId, $quantity);
 
         // Send royalty bonus
         $this->sendRoyality($userUnId, $packageId, $quantity);
@@ -214,6 +209,29 @@ class RegularProgram extends CI_Controller
         $this->session->set_flashdata('success', 'Order accepted successfully! Bonuses distributed.');
         redirect(base_url() . 'regularProgram/orderList/1');
     }
+
+
+    function get_network_by_level($un_id, $level = 0)
+	{
+		$network = array();
+		$members = $this->auth_model->team_list($un_id);
+
+		foreach ($members as $member) {
+			$member['level'] = $level;
+			if (count($this->auth_model->team_list($member['un_id'])) < 2) {
+				$network[] = $member;
+			}
+			$sub_network = $this->get_network_by_level($member['un_id'], $level + 1);
+			if (!empty($sub_network)) {
+				$network = array_merge($network, $sub_network);
+			}
+		}
+
+		$levels = array_column($network, 'level');
+		array_multisort($levels, SORT_ASC, $network);
+
+		return $network;
+	}
 
 
 
