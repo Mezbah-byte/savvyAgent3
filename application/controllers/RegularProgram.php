@@ -205,7 +205,7 @@ class RegularProgram extends CI_Controller
         $this->sendReferBonus($userUnId, $getProgramOrderDetails['referenceId'], $packageId, $quantity);
 
         // Send royalty bonus
-        // $this->sendRoyality($userUnId, $packageId, $quantity);
+        $this->sendRoyality($userUnId, $packageId, $quantity);
 
         $this->session->set_flashdata('success', 'Order accepted successfully! Bonuses distributed.');
         redirect(base_url() . 'regularProgram/orderList/1');
