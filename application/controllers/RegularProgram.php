@@ -201,7 +201,8 @@ class RegularProgram extends CI_Controller
         
         $this->RegularProgram_model->updateUserWallet($userUnId, $customerUpdateForm);
 
-        $this->sendReferBonus($userUnId, $customerDetails['refered_by'], $packageId, $quantity);
+        // $this->sendReferBonus($userUnId, $customerDetails['refered_by'], $packageId, $quantity);
+        $this->sendReferBonus($userUnId, $getProgramOrderDetails['referenceId'], $packageId, $quantity);
 
         // Send royalty bonus
         $this->sendRoyality($userUnId, $packageId, $quantity);
@@ -467,6 +468,7 @@ class RegularProgram extends CI_Controller
         try {
             $packageDetails = $this->RegularProgram_model->packageDetails($packageId);
             $refererDetails = $this->Basic_model->getUserDetails($receiver);
+            $senderDetails = $this->Basic_model->getUserDetails($sender);
 
             if (!$packageDetails || !$refererDetails) {
                 return false;
@@ -499,7 +501,7 @@ class RegularProgram extends CI_Controller
             }
 
             // Generation bonuses: 1% / 2 = 0.5% for levels 1-9
-            $uData = $refererDetails;
+            $uData = $this->Basic_model->getUserDetails($senderDetails['refered_by']);
             $level = 1;
 
             while ($level < 10) {
