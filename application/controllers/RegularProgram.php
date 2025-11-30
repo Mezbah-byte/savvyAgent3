@@ -205,7 +205,7 @@ class RegularProgram extends CI_Controller
         $this->sendReferBonus($userUnId, $getProgramOrderDetails['referenceId'], $packageId, $quantity);
 
         // Send royalty bonus
-        $this->sendRoyality($userUnId, $packageId, $quantity);
+        // $this->sendRoyality($userUnId, $packageId, $quantity);
 
         $this->session->set_flashdata('success', 'Order accepted successfully! Bonuses distributed.');
         redirect(base_url() . 'regularProgram/orderList/1');
@@ -521,7 +521,7 @@ class RegularProgram extends CI_Controller
                     $level_withdrawable_bonus = (($packageDetails['price'] * 0.01) * $packageQuantity) / 2; 
 
                     $generationBonusForm = array(
-                        'sender_un_id' => $receiver,
+                        'sender_un_id' => $sender,
                         'receiver_un_id' => $uData['un_id'],
                         'update_amount' => $level_bonus,
                         'withdrawable_amount' => $level_withdrawable_bonus,
