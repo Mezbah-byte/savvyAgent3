@@ -14,6 +14,41 @@
       </h5>
       
       <div class="card-body">
+        <?php if (!empty($myPrograms)) { 
+          $total = count($myPrograms);
+          $available = count(array_filter($myPrograms, function($p) { return $p['status'] == 1; }));
+          $sold = count(array_filter($myPrograms, function($p) { return $p['status'] == 2; }));
+        ?>
+        <div class="mt-4">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card bg-primary text-white">
+                <div class="card-body">
+                  <h5 class="text-white">Total Regular Programs</h5>
+                  <h2 class="text-white"><?= $total ?></h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-success text-white">
+                <div class="card-body">
+                  <h5 class="text-white">Available</h5>
+                  <h2 class="text-white"><?= $available ?></h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-info text-white">
+                <div class="card-body">
+                  <h5 class="text-white">Sold</h5>
+                  <h2 class="text-white"><?= $sold ?></h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?php } ?>
+        
         <div class="table-responsive text-nowrap">
           <table class="table table-hover">
             <thead>
@@ -69,40 +104,7 @@
           </table>
         </div>
 
-        <?php if (!empty($myPrograms)) { 
-          $total = count($myPrograms);
-          $available = count(array_filter($myPrograms, function($p) { return $p['status'] == 1; }));
-          $sold = count(array_filter($myPrograms, function($p) { return $p['status'] == 2; }));
-        ?>
-        <div class="mt-4">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card bg-primary text-white">
-                <div class="card-body">
-                  <h5 class="text-white">Total Regular Programs</h5>
-                  <h2 class="text-white"><?= $total ?></h2>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card bg-success text-white">
-                <div class="card-body">
-                  <h5 class="text-white">Available</h5>
-                  <h2 class="text-white"><?= $available ?></h2>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card bg-info text-white">
-                <div class="card-body">
-                  <h5 class="text-white">Sold</h5>
-                  <h2 class="text-white"><?= $sold ?></h2>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <?php } ?>
+        
       </div>
     </div>
 
