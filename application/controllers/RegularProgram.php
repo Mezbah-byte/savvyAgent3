@@ -416,66 +416,61 @@ class RegularProgram extends CI_Controller
         // Load pagination library
         $this->load->library('pagination');
 
-        // Get page number from URL (ensure it's an integer, default to 0)
-        $segment = $this->uri->segment(3);
-        $page = ($segment !== NULL && $segment !== '' && is_numeric($segment)) ? (int)$segment : 0;
+        // Read current page from query string (avoid URI segment nulls)
+        $currentPage = (int) $this->input->get('page');
+        if ($currentPage < 0) { $currentPage = 0; }
 
-        // Pagination configuration
+        // Pagination setup
         $totalRows = $this->RegularProgram_model->getAgentProgramsTotalCount($this->userUnId);
-        $perPage = 20;
-        
-        $config['base_url'] = base_url('regularProgram/myPrograms');
-        $config['total_rows'] = $totalRows;
-        $config['per_page'] = $perPage;
-        $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = FALSE;
-        $config['page_query_string'] = FALSE;
-        $config['reuse_query_string'] = FALSE;
-        
-        // Ensure we always have a numeric value for current page
-        if ($page === NULL || $page === '' || !is_numeric($page)) {
-            $page = 0;
-        }
-        $config['cur_page'] = (int)$page;
+        $perPage   = 20;
+        $offset    = $currentPage; // using offset directly
 
-        // Pagination styling (Bootstrap 5)
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['first_link'] = 'First';
-        $config['last_link'] = 'Last';
-        $config['first_tag_open'] = '<li class="page-item">';
+        $config = array();
+        $config['base_url']            = base_url('regularProgram/myPrograms');
+        $config['total_rows']          = $totalRows;
+        $config['per_page']            = $perPage;
+        $config['page_query_string']   = TRUE;           // use query string
+        $config['query_string_segment']= 'page';         // ?page=offset
+        $config['reuse_query_string']  = TRUE;
+        $config['use_page_numbers']    = FALSE;          // treat as offset
+
+        // Bootstrap 5 styling
+        $config['full_tag_open']   = '<ul class="pagination">';
+        $config['full_tag_close']  = '</ul>';
+        $config['first_link']      = 'First';
+        $config['last_link']       = 'Last';
+        $config['first_tag_open']  = '<li class="page-item">';
         $config['first_tag_close'] = '</li>';
-        $config['prev_link'] = '&laquo;';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-        $config['next_link'] = '&raquo;';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        $config['attributes'] = array('class' => 'page-link');
+        $config['prev_link']       = '&laquo;';
+        $config['prev_tag_open']   = '<li class="page-item">';
+        $config['prev_tag_close']  = '</li>';
+        $config['next_link']       = '&raquo;';
+        $config['next_tag_open']   = '<li class="page-item">';
+        $config['next_tag_close']  = '</li>';
+        $config['last_tag_open']   = '<li class="page-item">';
+        $config['last_tag_close']  = '</li>';
+        $config['cur_tag_open']    = '<li class="page-item active"><a class="page-link" href="#">';
+        $config['cur_tag_close']   = '</a></li>';
+        $config['num_tag_open']    = '<li class="page-item">';
+        $config['num_tag_close']   = '</li>';
+        $config['attributes']      = array('class' => 'page-link');
 
         $this->pagination->initialize($config);
 
-        // Get agent's programs inventory with pagination
-        $data['myPrograms'] = $this->RegularProgram_model->getAgentProgramsPaginated($this->userUnId, $perPage, $page);
-        
-        // Get statistics counts (all data, not just current page)
-        $programCounts = $this->RegularProgram_model->getAgentProgramsCount($this->userUnId);
-        $data['totalPrograms'] = $programCounts['total'];
-        $data['availablePrograms'] = $programCounts['active'];
-        $data['soldPrograms'] = $programCounts['sold'];
-        
-        $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
-        
-        // Create pagination links (now using MY_Pagination which handles null values properly)
-        $data['pagination'] = $this->pagination->create_links();
+        // Fetch paginated data
+        $data['myPrograms'] = $this->RegularProgram_model->getAgentProgramsPaginated($this->userUnId, $perPage, $offset);
 
-        // Load the view with data
+        // Stats (full counts)
+        $programCounts = $this->RegularProgram_model->getAgentProgramsCount($this->userUnId);
+        $data['totalPrograms']     = $programCounts['total'];
+        $data['availablePrograms'] = $programCounts['active'];
+        $data['soldPrograms']      = $programCounts['sold'];
+
+        $data['agentData']  = $this->Basic_model->agentDetails($this->userUnId);
+        $data['pagination'] = $this->pagination->create_links();
+        $data['offset']     = $offset; // for row numbering
+
+        // Load the view
         $this->load->view('dashboard/my_regular_programs', $data);
     }
 

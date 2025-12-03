@@ -65,10 +65,9 @@
                 </tr>
               <?php } else { ?>
                 <?php
-                // Calculate starting number based on current page
-                $page = ($this->uri->segment(3)) ? (int)$this->uri->segment(3) : 0;
-                $n = $page + 1;
-                   foreach ($myPrograms as $prog) { ?>
+                // Row numbering based on offset from query string
+                $n = (isset($offset) ? (int)$offset : 0) + 1;
+                foreach ($myPrograms as $prog) { ?>
                   <tr>
                     <td><?= $n++ ?></td>
                     <td><?= htmlspecialchars($prog['title']) ?></td>
@@ -105,8 +104,13 @@
         </div>
 
         <?php if (!empty($pagination)) { ?>
-        <div class="d-flex justify-content-center mt-4">
-          <?= $pagination ?>
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <div class="text-muted">
+            Showing <?= (isset($offset)?$offset:0)+1 ?> to <?= (isset($offset)?min($offset+count($myPrograms), $totalPrograms):count($myPrograms)) ?> of <?= $totalPrograms ?> entries
+          </div>
+          <div>
+            <?= $pagination ?>
+          </div>
         </div>
         <?php } ?>
         
