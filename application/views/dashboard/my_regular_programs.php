@@ -68,9 +68,11 @@
                   <td colspan="7" class="text-center">No regular programs in inventory</td>
                 </tr>
               <?php } else { ?>
-                <?php foreach ($myPrograms as $prog) { ?>
+                <?php
+                $n = 0;
+                   foreach ($myPrograms as $prog) { ?>
                   <tr>
-                    <td><?= $prog['id'] ?></td>
+                    <td><?= $n++ ?></td>
                     <td><?= htmlspecialchars($prog['title']) ?></td>
                     <td><?= number_format($prog['price'], 2) ?> ৳</td>
                     <td>
