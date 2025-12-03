@@ -106,6 +106,11 @@
           </table>
         </div>
 
+        <?php if (!empty($pagination)) { ?>
+        <div class="d-flex justify-content-center mt-4">
+          <?= $pagination ?>
+        </div>
+        <?php } ?>
         
       </div>
     </div>

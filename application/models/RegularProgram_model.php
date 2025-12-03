@@ -251,6 +251,48 @@ class RegularProgram_model extends CI_Model
     }
 
     /**
+     * Get agent's regular programs inventory with pagination
+     *
+     * @param string $agentUnId
+     * @param int $limit
+     * @param int $offset
+     * @param int $status (optional)
+     * @return array
+     */
+    function getAgentProgramsPaginated($agentUnId, $limit, $offset, $status = null) {
+        $this->db->select('agentregularprograms.*, regular_program_packages.title, regular_program_packages.price');
+        $this->db->from('agentregularprograms');
+        $this->db->join('regular_program_packages', 'agentregularprograms.program_un_id = regular_program_packages.un_id');
+        $this->db->where('agentregularprograms.agent_un_id', $agentUnId);
+        
+        if ($status !== null) {
+            $this->db->where('agentregularprograms.status', $status);
+        }
+        
+        $this->db->order_by('agentregularprograms.created_at', 'DESC');
+        $this->db->limit($limit, $offset);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    /**
+     * Get total count of agent's programs
+     *
+     * @param string $agentUnId
+     * @param int $status (optional)
+     * @return int
+     */
+    function getAgentProgramsTotalCount($agentUnId, $status = null) {
+        $this->db->where('agent_un_id', $agentUnId);
+        
+        if ($status !== null) {
+            $this->db->where('status', $status);
+        }
+        
+        return $this->db->count_all_results('agentregularprograms');
+    }
+
+    /**
      * Get agent's buy requests
      *
      * @param string $agentUnId

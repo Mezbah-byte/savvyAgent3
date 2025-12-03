@@ -413,9 +413,45 @@ class RegularProgram extends CI_Controller
             redirect(base_url());
         }
 
-        // Get agent's programs inventory
-        $data['myPrograms'] = $this->RegularProgram_model->getAgentPrograms($this->userUnId);
+        // Load pagination library
+        $this->load->library('pagination');
+
+        // Pagination configuration
+        $config['base_url'] = base_url('regularProgram/myPrograms');
+        $config['total_rows'] = $this->RegularProgram_model->getAgentProgramsTotalCount($this->userUnId);
+        $config['per_page'] = 20; // Items per page
+        $config['uri_segment'] = 3;
+
+        // Pagination styling (Bootstrap 5)
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo;';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo;';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+
+        $this->pagination->initialize($config);
+
+        // Get page number from URL
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        // Get agent's programs inventory with pagination
+        $data['myPrograms'] = $this->RegularProgram_model->getAgentProgramsPaginated($this->userUnId, $config['per_page'], $page);
         $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
+        $data['pagination'] = $this->pagination->create_links();
 
         // Load the view with data
         $this->load->view('dashboard/my_regular_programs', $data);
