@@ -69,7 +69,7 @@
                 </tr>
               <?php } else { ?>
                 <?php
-                $n = 0;
+                $n = 1;
                    foreach ($myPrograms as $prog) { ?>
                   <tr>
                     <td><?= $n++ ?></td>
