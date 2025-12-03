@@ -416,14 +416,27 @@ class RegularProgram extends CI_Controller
         // Load pagination library
         $this->load->library('pagination');
 
+        // Get page number from URL (ensure it's an integer, default to 0)
+        $segment = $this->uri->segment(3);
+        $page = ($segment !== NULL && $segment !== '' && is_numeric($segment)) ? (int)$segment : 0;
+
         // Pagination configuration
+        $totalRows = $this->RegularProgram_model->getAgentProgramsTotalCount($this->userUnId);
+        $perPage = 20;
+        
         $config['base_url'] = base_url('regularProgram/myPrograms');
-        $config['total_rows'] = $this->RegularProgram_model->getAgentProgramsTotalCount($this->userUnId);
-        $config['per_page'] = 20; // Items per page
+        $config['total_rows'] = $totalRows;
+        $config['per_page'] = $perPage;
         $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = FALSE; // Use offset instead of page numbers
+        $config['use_page_numbers'] = FALSE;
+        $config['page_query_string'] = FALSE;
         $config['reuse_query_string'] = FALSE;
-        $config['enable_query_strings'] = FALSE;
+        
+        // Ensure we always have a numeric value for current page
+        if ($page === NULL || $page === '' || !is_numeric($page)) {
+            $page = 0;
+        }
+        $config['cur_page'] = (int)$page;
 
         // Pagination styling (Bootstrap 5)
         $config['full_tag_open'] = '<ul class="pagination">';
@@ -448,12 +461,8 @@ class RegularProgram extends CI_Controller
 
         $this->pagination->initialize($config);
 
-        // Get page number from URL (ensure it's an integer, default to 0)
-        $segment = $this->uri->segment(3);
-        $page = ($segment !== NULL && $segment !== '' && is_numeric($segment)) ? (int)$segment : 0;
-
         // Get agent's programs inventory with pagination
-        $data['myPrograms'] = $this->RegularProgram_model->getAgentProgramsPaginated($this->userUnId, $config['per_page'], $page);
+        $data['myPrograms'] = $this->RegularProgram_model->getAgentProgramsPaginated($this->userUnId, $perPage, $page);
         
         // Get statistics counts (all data, not just current page)
         $programCounts = $this->RegularProgram_model->getAgentProgramsCount($this->userUnId);
@@ -462,6 +471,8 @@ class RegularProgram extends CI_Controller
         $data['soldPrograms'] = $programCounts['sold'];
         
         $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
+        
+        // Create pagination links (now using MY_Pagination which handles null values properly)
         $data['pagination'] = $this->pagination->create_links();
 
         // Load the view with data
