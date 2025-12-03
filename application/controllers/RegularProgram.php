@@ -421,6 +421,9 @@ class RegularProgram extends CI_Controller
         $config['total_rows'] = $this->RegularProgram_model->getAgentProgramsTotalCount($this->userUnId);
         $config['per_page'] = 20; // Items per page
         $config['uri_segment'] = 3;
+        $config['use_page_numbers'] = FALSE; // Use offset instead of page numbers
+        $config['reuse_query_string'] = FALSE;
+        $config['enable_query_strings'] = FALSE;
 
         // Pagination styling (Bootstrap 5)
         $config['full_tag_open'] = '<ul class="pagination">';
@@ -445,8 +448,9 @@ class RegularProgram extends CI_Controller
 
         $this->pagination->initialize($config);
 
-        // Get page number from URL (ensure it's an integer)
-        $page = ($this->uri->segment(3)) ? (int)$this->uri->segment(3) : 0;
+        // Get page number from URL (ensure it's an integer, default to 0)
+        $segment = $this->uri->segment(3);
+        $page = ($segment !== NULL && $segment !== '' && is_numeric($segment)) ? (int)$segment : 0;
 
         // Get agent's programs inventory with pagination
         $data['myPrograms'] = $this->RegularProgram_model->getAgentProgramsPaginated($this->userUnId, $config['per_page'], $page);
