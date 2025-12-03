@@ -14,18 +14,14 @@
       </h5>
       
       <div class="card-body">
-        <?php if (!empty($myPrograms)) { 
-          $total = count($myPrograms);
-          $available = count(array_filter($myPrograms, function($p) { return $p['status'] == 1; }));
-          $sold = count(array_filter($myPrograms, function($p) { return $p['status'] == 2; }));
-        ?>
+        <?php if (isset($totalPrograms) && $totalPrograms > 0) { ?>
         <div class="mt-4">
           <div class="row">
             <div class="col-md-4">
               <div class="card bg-primary text-white">
                 <div class="card-body">
                   <h5 class="text-white">Total Regular Programs</h5>
-                  <h2 class="text-white"><?= $total ?></h2>
+                  <h2 class="text-white"><?= $totalPrograms ?></h2>
                 </div>
               </div>
             </div>
@@ -33,7 +29,7 @@
               <div class="card bg-success text-white">
                 <div class="card-body">
                   <h5 class="text-white">Available</h5>
-                  <h2 class="text-white"><?= $available ?></h2>
+                  <h2 class="text-white"><?= $availablePrograms ?></h2>
                 </div>
               </div>
             </div>
@@ -41,7 +37,7 @@
               <div class="card bg-info text-white">
                 <div class="card-body">
                   <h5 class="text-white">Sold</h5>
-                  <h2 class="text-white"><?= $sold ?></h2>
+                  <h2 class="text-white"><?= $soldPrograms ?></h2>
                 </div>
               </div>
             </div>
@@ -69,7 +65,9 @@
                 </tr>
               <?php } else { ?>
                 <?php
-                $n = 1;
+                // Calculate starting number based on current page
+                $page = ($this->uri->segment(3)) ? (int)$this->uri->segment(3) : 0;
+                $n = $page + 1;
                    foreach ($myPrograms as $prog) { ?>
                   <tr>
                     <td><?= $n++ ?></td>
