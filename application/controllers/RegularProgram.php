@@ -426,13 +426,16 @@ class RegularProgram extends CI_Controller
         $offset    = $currentPage; // using offset directly
 
         $config = array();
-        $config['base_url']            = base_url('regularProgram/myPrograms');
-        $config['total_rows']          = $totalRows;
-        $config['per_page']            = $perPage;
-        $config['page_query_string']   = TRUE;           // use query string
-        $config['query_string_segment']= 'page';         // ?page=offset
-        $config['reuse_query_string']  = TRUE;
-        $config['use_page_numbers']    = FALSE;          // treat as offset
+        $config['base_url']             = base_url('regularProgram/myPrograms');
+        $config['total_rows']           = $totalRows;
+        $config['per_page']             = $perPage;
+        $config['page_query_string']    = TRUE;           // use query string
+        $config['query_string_segment'] = 'page';         // ?page=offset
+        $config['reuse_query_string']   = TRUE;
+        $config['use_page_numbers']     = FALSE;          // treat as offset
+        $config['cur_page']             = (string)$offset; // make string to satisfy ctype_digit
+        $config['first_url']            = $config['base_url'].'?page=0';
+        $config['suffix']               = ''; // ensure no NULL suffix
 
         // Bootstrap 5 styling
         $config['full_tag_open']   = '<ul class="pagination">';
