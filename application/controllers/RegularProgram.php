@@ -413,11 +413,18 @@ class RegularProgram extends CI_Controller
             redirect(base_url());
         }
 
-        // Get agent's programs inventory
+        // Get ALL programs (no pagination on server side)
         $data['myPrograms'] = $this->RegularProgram_model->getAgentPrograms($this->userUnId);
+
+        // Get statistics counts
+        $programCounts = $this->RegularProgram_model->getAgentProgramsCount($this->userUnId);
+        $data['totalPrograms']     = $programCounts['total'];
+        $data['availablePrograms'] = $programCounts['active'];
+        $data['soldPrograms']      = $programCounts['sold'];
+
         $data['agentData'] = $this->Basic_model->agentDetails($this->userUnId);
 
-        // Load the view with data
+        // Load the view
         $this->load->view('dashboard/my_regular_programs', $data);
     }
 
