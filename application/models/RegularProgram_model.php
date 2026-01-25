@@ -496,4 +496,26 @@ class RegularProgram_model extends CI_Model
         
         return $finalData;
     }
+
+    public function getAllsevenUnderUsers() 
+    {
+        $this->db->where('current_regular_program_package_id !=', '');
+        $data = $this->db->get('customers')->result_array();
+        $finalData = [];
+        
+        foreach ($data as $user) {
+            $userPackages = $this->userRegularPackagesList($user['un_id']);
+            $totalPackages = 0;
+            
+            foreach ($userPackages as $pkg) {
+                $totalPackages += (int)$pkg['quantity'];
+            }
+            
+            if ($totalPackages < 7) {
+                $finalData[] = $user;
+            }
+        }
+        
+        return $finalData;
+    }
 }

@@ -88,7 +88,7 @@ $db['default'] = array(
 	// 'hostname' => 'localhost',
 	// 'username' => 'root',
 	// 'password' => '',
-	// 'database' => 'savvy4',  
+	// 'database' => 'savvy5',  
 
 	// 'hostname' => '115.187.18.36',
 	// 'username' => 'ieltsasp_savvy',
