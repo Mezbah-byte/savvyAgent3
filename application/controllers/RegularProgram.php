@@ -586,7 +586,7 @@ class RegularProgram extends CI_Controller
             }
 
             // Calculate royalty distribution: 38% of package price
-            $totalSharesToDistribute = $packageDetails['price'] * 0.38 * $packageQuantity;
+            $totalSharesToDistribute = $packageDetails['price'] * 0.45 * $packageQuantity;
 
             $totalUsers = 0;
             foreach ($allRegularProgramUsers as $user) {
