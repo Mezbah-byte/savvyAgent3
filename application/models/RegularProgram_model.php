@@ -500,6 +500,7 @@ class RegularProgram_model extends CI_Model
     public function getAllsevenUnderUsers() 
     {
         $this->db->where('current_regular_program_package_id !=', '');
+        $this->db->where('current_regular_program_package_id !=', 'free_package_001');
         $data = $this->db->get('customers')->result_array();
         $finalData = [];
         
