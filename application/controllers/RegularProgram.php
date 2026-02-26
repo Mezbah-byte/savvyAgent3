@@ -482,8 +482,8 @@ class RegularProgram extends CI_Controller
             }
 
             // Direct referral bonus: 10% / 2 = 5%
-            $update_amount = ((($packageDetails['price'] * 10) / 100) / 2) * $packageQuantity; 
-            $withdrawable_amount = ((($packageDetails['price'] * 10) / 100) / 2) * $packageQuantity;
+            $update_amount = ((($packageDetails['price'] * 15) / 100) / 2) * $packageQuantity; 
+            $withdrawable_amount = ((($packageDetails['price'] * 15) / 100) / 2) * $packageQuantity;
 
             // Only give bonus if referrer has a regular program package
             if ($refererDetails && !empty($refererDetails['current_regular_program_package_id'])) {
