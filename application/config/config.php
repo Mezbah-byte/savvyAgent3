@@ -2,6 +2,15 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 date_default_timezone_set('Asia/Dhaka');
 
+/*
+|--------------------------------------------------------------------------
+| Site Suspended / Maintenance Mode
+|--------------------------------------------------------------------------
+| Set TRUE  → every route shows "Hosting Suspended" page.
+| Set FALSE → site runs normally.
+*/
+$config['site_suspended'] = TRUE;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -113,7 +122,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
