@@ -9,7 +9,7 @@ date_default_timezone_set('Asia/Dhaka');
 | Set TRUE  → every route shows "Hosting Suspended" page.
 | Set FALSE → site runs normally.
 */
-$config['site_suspended'] = TRUE;
+$config['site_suspended'] = FALSE;
 
 
 /*
